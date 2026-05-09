@@ -1,4 +1,4 @@
-require('dotenv').config();
+﻿require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -606,7 +606,49 @@ const seedData = [
             { title: "Live Telemetry Overlay", desc: "Inside the VR lenses, pilots have a dedicated HUD overlay tracking Engine Temps, Vibrations, and Oil Pressure. The data reacts in real-time, syncing over the Photon Network directly to the instructor portal.", mediaUrl: "assets/hero-bg-new.webp", type: "HUD ANALYTICS" },
             { title: "Defect Identification Tool", desc: "Using the VR smart flashlight and scanner tool, trainees can detect microscopic oil leaks and stress fractures on engine components. The tool triggers specific events logged exactly to their evaluation scores.", mediaUrl: "assets/hero-bg.jpg", type: "DIAGNOSTICS" }
         ])
-    }
+    },
+    // Presentation Page — all panel text editable from admin
+    { page: 'presentation', key: 'pres-step1-badge',         content: '01 // OVERVIEW' },
+    { page: 'presentation', key: 'pres-step1-title',         content: 'AeroTwin' },
+    { page: 'presentation', key: 'pres-step1-subtitle',      content: 'Next-Gen' },
+    { page: 'presentation', key: 'pres-step1-desc',          content: 'Welcome to the ultimate aerospace engineering presentation. This interactive model demonstrates structural integrity and aerodynamic supremacy.' },
+    { page: 'presentation', key: 'pres-stat1-value',         content: '120K' },
+    { page: 'presentation', key: 'pres-stat1-label',         content: 'THRUST (LBF)' },
+    { page: 'presentation', key: 'pres-stat2-value',         content: '99.8%' },
+    { page: 'presentation', key: 'pres-stat2-label',         content: 'EFFICIENCY' },
+    { page: 'presentation', key: 'pres-stat3-value',         content: 'Mach 3' },
+    { page: 'presentation', key: 'pres-stat3-label',         content: 'TOP SPEED' },
+    { page: 'presentation', key: 'pres-scroll-hint',         content: 'INITIATE SEQUENCE' },
+    { page: 'presentation', key: 'pres-step2-badge',         content: '02 // 3D GRID DECOMPOSITION' },
+    { page: 'presentation', key: 'pres-step2-title',         content: 'Structured Analysis' },
+    { page: 'presentation', key: 'pres-step2-desc',          content: 'Components isolated and arranged in a perfect 3D spatial grid. Engineers can inspect every module without occlusion.' },
+    { page: 'presentation', key: 'pres-step2-feature-title', content: 'Grid Sorting Algorithm' },
+    { page: 'presentation', key: 'pres-step2-feature-desc',  content: 'Parts perfectly organized by spatial volume' },
+    { page: 'presentation', key: 'pres-step3-badge',         content: '03 // MICRO-ANALYSIS' },
+    { page: 'presentation', key: 'pres-step3-title',         content: 'Material Composition' },
+    { page: 'presentation', key: 'pres-step3-desc',          content: 'Laser ring scan active. Aerospace-grade alloys ensure high tensile strength and extremely low weight under pressure.' },
+    { page: 'presentation', key: 'pres-mat1-value',          content: 'Al-Ti' },
+    { page: 'presentation', key: 'pres-mat1-label',          content: 'ALLOY TYPE' },
+    { page: 'presentation', key: 'pres-mat2-value',          content: '4.5g' },
+    { page: 'presentation', key: 'pres-mat2-label',          content: 'DENSITY/CM3' },
+    { page: 'presentation', key: 'pres-step4-badge',         content: '04 // REASSEMBLY' },
+    { page: 'presentation', key: 'pres-step4-title',         content: 'Precision Integration' },
+    { page: 'presentation', key: 'pres-step4-desc',          content: 'Modules locking back with micro-millimeter precision. Advanced composites reduce overall weight by 15%.' },
+    { page: 'presentation', key: 'pres-bar1-label',          content: 'Structural Integrity' },
+    { page: 'presentation', key: 'pres-bar1-pct',            content: '100%' },
+    { page: 'presentation', key: 'pres-bar2-label',          content: 'Assembly Accuracy' },
+    { page: 'presentation', key: 'pres-bar2-pct',            content: '99.9%' },
+    { page: 'presentation', key: 'pres-step5-badge',         content: '05 // THERMODYNAMICS' },
+    { page: 'presentation', key: 'pres-step5-title',         content: 'Heat Management' },
+    { page: 'presentation', key: 'pres-step5-desc',          content: 'Advanced cooling channels within the turbine blades prevent melting during supersonic cruise.' },
+    { page: 'presentation', key: 'pres-step5-feat1',         content: 'Active Liquid Cooling System' },
+    { page: 'presentation', key: 'pres-step5-feat2',         content: 'Ceramic Matrix Composites (CMC)' },
+    { page: 'presentation', key: 'pres-step6-badge',         content: '06 // PERFORMANCE' },
+    { page: 'presentation', key: 'pres-step6-title',         content: 'Maximum Thrust Test' },
+    { page: 'presentation', key: 'pres-step6-desc',          content: 'Simulating extreme operational conditions. Notice the rotational velocity and heat dissipation mechanics.' },
+    { page: 'presentation', key: 'pres-live1-label',         content: 'CORE RPM' },
+    { page: 'presentation', key: 'pres-live2-label',         content: 'EXHAUST TEMP' },
+    { page: 'presentation', key: 'pres-live2-value',         content: '1,850 C' }
 ];
 
 app.get('/api/admin/seed', verifyToken, async (req, res) => {
@@ -696,8 +738,7 @@ app.get('/admin', (req, res) => {
 // === AI ANALYSIS ENDPOINTS (Direct HTTP - same as Unity) ===
 const GEMINI_MODELS = [
     'gemini-2.5-flash',   // Primary: latest stable (confirmed available)
-    'gemini-2.0-flash',   // Fallback: fast stable model (confirmed available)
-];
+    ];
 
 async function callGemini(prompt, modelIndex = 0) {
     const MAX_RETRIES = 3;

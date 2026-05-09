@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AeroTwin XR | Ultimate Presentation</title>
+    <!-- WebDashboard Global Styles -->
+    <link rel="stylesheet" href="style.css?v=6">
+    <!-- Presentation Specific Styles -->
+    <link rel="stylesheet" href="presentation-style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/png" href="logo.png">
+    <style>
+        /* Force navbar above 3D canvas */
+        #navbar {
+            z-index: 100000 !important;
+        }
+
+        .main-footer {
+            position: relative;
+            z-index: 100000 !important;
+        }
+
+        /* Fix cursor for nav links so they are clickable despite the presentation custom cursor */
+        #navbar a,
+        .main-footer a,
+        .btn-get-started {
+            cursor: pointer !important;
+        }
+    </style>
+</head>
+
+<body class="presentation-page">
+
+    <!-- ─── NAVBAR ─── -->
+    <nav id="navbar">
+        <a href="index.html" class="nav-logo">
+            <img src="logo.png" alt="AeroTwin Logo">
+            AeroTwin XR
+        </a>
+        <button class="nav-hamburger" id="nav-hamburger"
+            aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        <div class="nav-overlay" id="nav-overlay"></div>
+        <ul class="nav-links">
+            <li><a href="index.html" class="nav-home">Home</a></li>
+            <li><a href="news.html" class="nav-news">News</a></li>
+            <li><a href="about.html" class="nav-about">About</a></li>
+            <li><a href="features.html" class="nav-features">Features</a></li>
+            <li><a href="guide.html" class="nav-guide">Guide</a></li>
+            <li><a href="presentation.html" class="nav-guide active">Presentation</a></li>
+            <li><a href="leaderboard.html" class="nav-leaderboard">Leaderboard</a></li>
+            <li><a href="doctor-portal.html" class="nav-join-link"
+                    style="color: var(--accent-cyan); font-weight: 800; border: 1px solid var(--accent-cyan); padding: 5px 15px; border-radius: 5px; margin-right: 10px;">JOIN</a>
+            </li>
+            <li><a href="pricing.html" class="btn-get-started">Get Started</a></li>
+        </ul>
+    </nav>
+
+    <!-- ─── PRESENTATION APP ─── -->
+    <!-- Touch 4: Cinematic Letterbox -->
+    <div class="letterbox top"></div>
+    <div class="letterbox bottom"></div>
+
+    <!-- Touch 5: Custom Futuristic Cursor -->
+    <div class="custom-cursor"></div>
+    <div class="cursor-dot"></div>
+
+    <!-- 3D Canvas -->
+    <div id="canvas-container"></div>
+
+    <!-- Touch 9: 3D Raycaster Tooltip -->
+    <div id="3d-tooltip" class="part-tooltip">
+        <div class="tt-header">SCANNING...</div>
+        <div class="tt-data" id="tt-name">UNKNOWN</div>
+        <div class="tt-data">INT: <span class="accent">99.8%</span></div>
+    </div>
+
+    <!-- HUD Overlay -->
+    <div class="hud-overlay">
+        <div class="hud-corner top-left"></div>
+        <div class="hud-corner top-right"></div>
+        <div class="hud-corner bottom-left"></div>
+        <div class="hud-corner bottom-right"></div>
+
+        <div class="hud-data top">
+            <span>PROJECT: AEROTWIN</span>
+            <span class="pulse-text" id="status-text">STATUS: SECURE CONNECTION</span>
+            <span id="system-nominal">SYSTEM: NOMINAL</span>
+        </div>
+
+        <!-- Touch 3: Sound Wave UI Analyzer -->
+        <div class="audio-analyzer">
+            <div class="bar" style="animation-delay: 0.1s"></div>
+            <div class="bar" style="animation-delay: 0.3s"></div>
+            <div class="bar" style="animation-delay: 0.2s"></div>
+            <div class="bar" style="animation-delay: 0.4s"></div>
+            <div class="bar" style="animation-delay: 0.1s"></div>
+        </div>
+    </div>
+
+    <!-- 3D Floating Labels -->
+    <div id="labels-container"></div>
+
+    <div id="scroll-content">
+        <section class="step" id="step1">
+            <div class="presentation-panel left main-title" style="max-width: 800px;">
+                <div class="data-stream"></div>
+                <div class="panel-header">
+                    <span class="badge" data-cms="pres-step1-badge">Built by TechNest Team • Amman Arab
+                        University</span>
+                    <div class="line-dec"></div>
+                </div>
+                <h1 data-cms="pres-step1-title"
+                    style="font-size: 5.5rem; margin-bottom: 0.5rem; text-shadow: 0 0 30px rgba(0,229,255,0.3);">
+                    AeroTwin <span style="font-size: 5.5rem; color: var(--accent-cyan);">XR</span></h1>
+                <p data-cms="pres-step1-desc"
+                    style="font-size: 1.5rem; color: #c0d0e0; letter-spacing: 1px; line-height: 1.4;">Integrated
+                    Training Ecosystem for Aviation Maintenance Engineers</p>
+
+                <div class="stats-grid"
+                    style="grid-template-columns: repeat(4, 1fr); margin-top: 40px; gap: 15px; border-top: none; background: transparent;">
+                    <div class="stat-box"
+                        style="background: rgba(0,229,255,0.05); border: 1px solid rgba(0,229,255,0.2); padding: 15px; border-radius: 8px; animation: fadeIn 0.5s ease backwards 0.2s;">
+                        <div class="stat-value" style="font-size: 1.1rem; color: #fff;">Virtual Reality</div>
+                    </div>
+                    <div class="stat-box"
+                        style="background: rgba(0,229,255,0.05); border: 1px solid rgba(0,229,255,0.2); padding: 15px; border-radius: 8px; animation: fadeIn 0.5s ease backwards 0.4s;">
+                        <div class="stat-value" style="font-size: 1.1rem; color: #fff;">Digital Twin</div>
+                    </div>
+                    <div class="stat-box"
+                        style="background: rgba(0,229,255,0.05); border: 1px solid rgba(0,229,255,0.2); padding: 15px; border-radius: 8px; animation: fadeIn 0.5s ease backwards 0.6s;">
+                        <div class="stat-value" style="font-size: 1.1rem; color: #fff;">Artificial Intelligence</div>
+                    </div>
+                    <div class="stat-box"
+                        style="background: rgba(0,229,255,0.05); border: 1px solid rgba(0,229,255,0.2); padding: 15px; border-radius: 8px; animation: fadeIn 0.5s ease backwards 0.8s;">
+                        <div class="stat-value" style="font-size: 1.1rem; color: #fff;">Web Analytics</div>
+                    </div>
+                </div>
+                <div class="scroll-indicator" style="margin-top: 50px;">
+                    <span data-cms="pres-scroll-hint">INITIATE SEQUENCE</span>
+                    <div class="line"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 2: The Engineering Gap -->
+        <section class="step" id="step2">
+            <div class="presentation-panel right detail-panel"
+                style="max-width: 650px; padding: 25px; background: rgba(10, 15, 25, 0.85); backdrop-filter: blur(20px);">
+                <div class="panel-header">
+                    <span class="badge" data-cms="pres-step2-badge">02 // THE ENGINEERING GAP</span>
+                    <div class="line-dec"></div>
+                </div>
+                <h2 data-cms="pres-step2-title"
+                    style="font-size: 2.2rem; text-shadow: 0 0 20px rgba(255, 60, 60, 0.4); margin-bottom: 10px; color: #fff;">
+                    THE ENGINEERING GAP</h2>
+
+                <blockquote
+                    style="font-size: 1.1rem; line-height: 1.4; font-style: italic; border-left: 4px solid var(--accent-cyan); margin: 15px 0; color: #e0e0e0; background: rgba(0, 229, 255, 0.05); padding: 15px; border-radius: 0 8px 8px 0; box-shadow: inset 0 0 20px rgba(0,229,255,0.02);">
+                    "They see, but don't touch.<br>They observe, but don't explore."
+                </blockquote>
+
+                <div class="big-stat-container"
+                    style="text-align: center; margin: 20px 0; border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; background: rgba(0,0,0,0.3);">
+                    <div id="tech-counter"
+                        style="font-size: 3.5rem; font-weight: 800; color: var(--accent-cyan); font-family: 'Chakra Petch', sans-serif; text-shadow: 0 0 20px rgba(0,229,255,0.6); line-height: 1;">
+                        0</div>
+                    <div style="font-size: 1rem; color: #fff; font-weight: 600; margin-top: 8px; margin-bottom: 4px;">
+                        Aviation Maintenance Technicians needed globally</div>
+                    <div style="font-size: 0.85rem; color: #a0b0c0; margin-bottom: 12px;">Boeing 2025 Pilot & Technician
+                        Outlook — Next 20 years</div>
+                    <div
+                        style="display: inline-block; background: rgba(255, 165, 0, 0.15); border: 1px solid rgba(255, 165, 0, 0.5); color: #ffb700; padding: 4px 12px; border-radius: 20px; font-weight: bold; letter-spacing: 1px; font-size: 0.8rem; box-shadow: 0 0 10px rgba(255, 165, 0, 0.2);">
+                        MIDDLE EAST = FASTEST-GROWING REGION</div>
+                </div>
+
+                <div class="gap-cards" style="display: flex; gap: 12px; margin-top: 20px;">
+                    <!-- Problem/Solution 1 -->
+                    <div class="gap-card"
+                        style="flex: 1; background: rgba(20, 25, 35, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 15px; position: relative; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                        <div
+                            style="position: absolute; top: -5px; right: -5px; font-size: 3.5rem; opacity: 0.05; font-weight: 900; font-family: 'Chakra Petch';">
+                            01</div>
+                        <h4
+                            style="color: #ff6b6b; font-size: 0.95rem; margin-bottom: 8px; border-bottom: 1px solid rgba(255,107,107,0.3); padding-bottom: 5px;">
+                            Cost-Prohibitive</h4>
+                        <p
+                            style="font-size: 0.85rem; color: #d0d0d0; margin-bottom: 15px; line-height: 1.4; height: 50px;">
+                            A real training engine costs millions of $</p>
+                        <div
+                            style="color: var(--accent-cyan); font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 5px;">
+                            <span style="font-size: 1.2rem;">&rarr;</span> Virtual Reality
+                        </div>
+                        <p style="font-size: 0.8rem; color: #90a0b0; margin-top: 4px;">Digital parts, no damage</p>
+                    </div>
+
+                    <!-- Problem/Solution 2 -->
+                    <div class="gap-card"
+                        style="flex: 1; background: rgba(20, 25, 35, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 15px; position: relative; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                        <div
+                            style="position: absolute; top: -5px; right: -5px; font-size: 3.5rem; opacity: 0.05; font-weight: 900; font-family: 'Chakra Petch';">
+                            02</div>
+                        <h4
+                            style="color: #ff6b6b; font-size: 0.95rem; margin-bottom: 8px; border-bottom: 1px solid rgba(255,107,107,0.3); padding-bottom: 5px;">
+                            Zero Error Tol.</h4>
+                        <p
+                            style="font-size: 0.85rem; color: #d0d0d0; margin-bottom: 15px; line-height: 1.4; height: 50px;">
+                            Mistakes can cost lives</p>
+                        <div
+                            style="color: var(--accent-cyan); font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 5px;">
+                            <span style="font-size: 1.2rem;">&rarr;</span> Digital Twin
+                        </div>
+                        <p style="font-size: 0.8rem; color: #90a0b0; margin-top: 4px;">Accurate replica</p>
+                    </div>
+
+                    <!-- Problem/Solution 3 -->
+                    <div class="gap-card"
+                        style="flex: 1; background: rgba(20, 25, 35, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 15px; position: relative; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                        <div
+                            style="position: absolute; top: -5px; right: -5px; font-size: 3.5rem; opacity: 0.05; font-weight: 900; font-family: 'Chakra Petch';">
+                            03</div>
+                        <h4
+                            style="color: #ff6b6b; font-size: 0.95rem; margin-bottom: 8px; border-bottom: 1px solid rgba(255,107,107,0.3); padding-bottom: 5px;">
+                            Op. Constraints</h4>
+                        <p
+                            style="font-size: 0.85rem; color: #d0d0d0; margin-bottom: 15px; line-height: 1.4; height: 50px;">
+                            Permits, limited time</p>
+                        <div
+                            style="color: var(--accent-cyan); font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 5px;">
+                            <span style="font-size: 1.2rem;">&rarr;</span> AI Dashboard
+                        </div>
+                        <p style="font-size: 0.8rem; color: #90a0b0; margin-top: 4px;">Smart instructor 24/7</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 3: Four Layers -->
+        <section class="step" id="step3">
+            <div class="presentation-panel left main-title"
+                style="max-width: 600px; padding: 30px 35px; background: rgba(8, 12, 22, 0.88); backdrop-filter: blur(22px); border: 1px solid rgba(0,229,255,0.15);">
+                <div class="panel-header">
+                    <span class="badge" style="color: var(--accent-cyan);">03 // SYSTEM ARCHITECTURE</span>
+                    <div class="line-dec"></div>
+                </div>
+
+                <h2
+                    style="font-size: 3rem; font-weight: 900; color: #fff; line-height: 1.05; margin-bottom: 4px; text-shadow: 0 0 25px rgba(0,229,255,0.2);">
+                    FOUR LAYERS.</h2>
+                <h2
+                    style="font-size: 3rem; font-weight: 900; color: var(--accent-cyan); line-height: 1.05; margin-bottom: 28px; text-shadow: 0 0 30px rgba(0,229,255,0.5);">
+                    ONE ECOSYSTEM.</h2>
+
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px;">
+                    <!-- Layer 01 -->
+                    <div
+                        style="display: flex; align-items: center; gap: 14px; padding: 12px 16px; background: rgba(0,229,255,0.04); border: 1px solid rgba(0,229,255,0.12); border-radius: 8px; transition: all 0.3s;">
+                        <span
+                            style="font-family: 'Chakra Petch', sans-serif; font-size: 1.3rem; font-weight: 700; color: rgba(0,229,255,0.25); min-width: 28px;">01</span>
+                        <span style="color: var(--accent-cyan); font-size: 1.1rem; font-weight: 700;">→</span>
+                        <span style="font-size: 1rem; color: #e0eaf5; font-weight: 500; letter-spacing: 0.5px;">Virtual
+                            Reality Training Environment</span>
+                    </div>
+                    <!-- Layer 02 -->
+                    <div
+                        style="display: flex; align-items: center; gap: 14px; padding: 12px 16px; background: rgba(0,229,255,0.04); border: 1px solid rgba(0,229,255,0.12); border-radius: 8px;">
+                        <span
+                            style="font-family: 'Chakra Petch', sans-serif; font-size: 1.3rem; font-weight: 700; color: rgba(0,229,255,0.25); min-width: 28px;">02</span>
+                        <span style="color: var(--accent-cyan); font-size: 1.1rem; font-weight: 700;">→</span>
+                        <span style="font-size: 1rem; color: #e0eaf5; font-weight: 500; letter-spacing: 0.5px;">Digital
+                            Twin Robot</span>
+                    </div>
+                    <!-- Layer 03 -->
+                    <div
+                        style="display: flex; align-items: center; gap: 14px; padding: 12px 16px; background: rgba(0,229,255,0.04); border: 1px solid rgba(0,229,255,0.12); border-radius: 8px;">
+                        <span
+                            style="font-family: 'Chakra Petch', sans-serif; font-size: 1.3rem; font-weight: 700; color: rgba(0,229,255,0.25); min-width: 28px;">03</span>
+                        <span style="color: var(--accent-cyan); font-size: 1.1rem; font-weight: 700;">→</span>
+                        <span style="font-size: 1rem; color: #e0eaf5; font-weight: 500; letter-spacing: 0.5px;">AI
+                            Layer</span>
+                    </div>
+                    <!-- Layer 04 -->
+                    <div
+                        style="display: flex; align-items: center; gap: 14px; padding: 12px 16px; background: rgba(0,229,255,0.04); border: 1px solid rgba(0,229,255,0.12); border-radius: 8px;">
+                        <span
+                            style="font-family: 'Chakra Petch', sans-serif; font-size: 1.3rem; font-weight: 700; color: rgba(0,229,255,0.25); min-width: 28px;">04</span>
+                        <span style="color: var(--accent-cyan); font-size: 1.1rem; font-weight: 700;">→</span>
+                        <span
+                            style="font-size: 1rem; color: #e0eaf5; font-weight: 500; letter-spacing: 0.5px;">Web-based
+                            Learning Analytics</span>
+                    </div>
+                </div>
+
+                <div
+                    style="border-left: 3px solid #ffb700; padding: 10px 16px; background: rgba(255,183,0,0.05); border-radius: 0 6px 6px 0;">
+                    <p style="font-style: italic; font-size: 1.05rem; color: #c8d8e8; margin: 0;">"Each layer feeds the
+                        next."</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 4: Layer 1 — Virtual Reality -->
+        <section class="step" id="step4">
+            <div class="presentation-panel right detail-panel"
+                style="max-width: 640px; padding: 28px 32px; background: rgba(8, 12, 22, 0.88); backdrop-filter: blur(22px); border: 1px solid rgba(0,229,255,0.15);">
+                <div class="panel-header">
+                    <span class="badge" style="color: var(--accent-cyan);">LAYER 1 // VIRTUAL REALITY</span>
+                    <div class="line-dec"></div>
+                </div>
+
+                <h2
+                    style="font-size: 3.2rem; font-weight: 900; color: var(--accent-cyan); line-height: 1.0; margin-bottom: 2px; text-shadow: 0 0 30px rgba(0,229,255,0.5);">
+                    IMMERSIVE</h2>
+                <h2
+                    style="font-size: 2.4rem; font-weight: 700; color: #fff; line-height: 1.0; margin-bottom: 20px; letter-spacing: 3px;">
+                    TRAINING</h2>
+
+                <!-- Description Box -->
+                <blockquote
+                    style="font-size: 0.95rem; line-height: 1.6; font-style: italic; border-left: 4px solid var(--accent-cyan); margin: 0 0 20px 0; color: #c8d8e8; background: rgba(0,229,255,0.04); padding: 14px 16px; border-radius: 0 8px 8px 0;">
+                    Step into a fully simulated aviation hangar. Disassemble, reassemble, and respond to emergencies
+                    &mdash; with zero real-world risk.
+                </blockquote>
+
+                <!-- Tech Stack -->
+                <div
+                    style="display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin-bottom: 20px; font-size: 0.85rem;">
+                    <span style="color: #607080; font-weight: 600;">Platform</span><span style="color: #e0eaf5;">Meta
+                        Quest 2</span>
+                    <span style="color: #607080; font-weight: 600;">Engine</span><span style="color: #e0eaf5;">Unity 3D
+                        + URP</span>
+                    <span style="color: #607080; font-weight: 600;">Toolkit</span><span style="color: #e0eaf5;">XR
+                        Interaction Toolkit</span>
+                </div>
+
+                <!-- Functional Fidelity Box -->
+                <div
+                    style="text-align: center; padding: 14px; background: rgba(0,229,255,0.06); border: 1px solid rgba(0,229,255,0.3); border-radius: 10px; margin-bottom: 18px;">
+                    <div
+                        style="font-size: 1.3rem; font-weight: 900; color: #fff; font-family: 'Chakra Petch', sans-serif; letter-spacing: 2px;">
+                        FUNCTIONAL FIDELITY</div>
+                    <div style="font-size: 0.85rem; color: #90a0b0; margin-top: 4px;">Behavior over Appearance</div>
+                    <div style="display: flex; justify-content: center; gap: 20px; margin-top: 12px;">
+                        <span style="font-size: 0.8rem; color: #c8d8e8;">&#x2696;&#xFE0F; Mass</span>
+                        <span style="font-size: 0.8rem; color: #c8d8e8;">&#127919; Center of Mass</span>
+                        <span style="font-size: 0.8rem; color: #c8d8e8;">&#x1F504; Moment of Inertia</span>
+                    </div>
+                </div>
+
+                <!-- Training Scenarios -->
+                <div style="font-size: 0.82rem; color: #a0b8c8;">
+                    <div
+                        style="font-weight: 700; color: #607080; letter-spacing: 1px; margin-bottom: 8px; font-size: 0.75rem;">
+                        TRAINING SCENARIOS</div>
+                    <div style="display: flex; flex-direction: column; gap: 6px;">
+                        <div style="display: flex; align-items: center; gap: 8px;"><span
+                                style="color: var(--accent-cyan);">›</span> Safety Response &mdash; Emergency Landing +
+                            Engine Fire</div>
+                        <div style="display: flex; align-items: center; gap: 8px;"><span
+                                style="color: var(--accent-cyan);">›</span> Component Inspection</div>
+                        <div style="display: flex; align-items: center; gap: 8px;"><span
+                                style="color: var(--accent-cyan);">›</span> Engine Diagnostics</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 5: Digital Twin Robot -->
+        <section class="step full-width-step" id="step5">
+            <div class="robot-specs-container">
+                <div class="rs-header">
+                    <div class="rs-layer" data-cms="pres-step3-layer">LAYER 02 &bull; DIGITAL TWIN ROBOT</div>
+                    <div class="rs-tagline" data-cms="pres-step3-tagline">Manufacturable. Validated. Pre-Hardware.</div>
+                </div>
+
+                <div class="rs-cards">
+                    <div class="rs-cards-left">
+                        <div class="rs-card">
+                            <h4 data-cms="pres-rs-card1-title">01: MECANUM WHEELS</h4>
+                            <p data-cms="pres-rs-card1-desc">360&deg; omnidirectional motion &bull; Tight hangar
+                                navigation</p>
+                        </div>
+                        <div class="rs-card">
+                            <h4 data-cms="pres-rs-card2-title">02: SCISSOR LIFT</h4>
+                            <p data-cms="pres-rs-card2-desc">Vertical reach 0-2.4m &bull; Access to elevated components
+                            </p>
+                        </div>
+                        <div class="rs-card">
+                            <h4 data-cms="pres-rs-card3-title">03: RPLIDAR A1</h4>
+                            <p data-cms="pres-rs-card3-desc">360&deg; environmental scanning &bull; 12m range</p>
+                        </div>
+                    </div>
+                    <div class="rs-cards-right">
+                        <div class="rs-card">
+                            <h4 data-cms="pres-rs-card4-title">04: NVIDIA JETSON NANO</h4>
+                            <p data-cms="pres-rs-card4-desc">128-core Maxwell GPU &bull; On-board AI inference</p>
+                        </div>
+                        <div class="rs-card">
+                            <h4 data-cms="pres-rs-card5-title">05: INTEL REALSENSE D435I</h4>
+                            <p data-cms="pres-rs-card5-desc">Depth perception &bull; IMU-stabilized stereo vision</p>
+                        </div>
+                        <div class="rs-card">
+                            <h4 data-cms="pres-rs-card6-title">06: ARDUINO MEGA</h4>
+                            <p data-cms="pres-rs-card6-desc">Motor + sensor low-level control &bull; Real-time PWM
+                                signaling</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rs-footer">
+                    <div class="rs-footer-item">
+                        <h5 data-cms="pres-rs-foot1-title">01 &bull; PHYSICAL TESTING</h5>
+                        <p data-cms="pres-rs-foot1-desc">CENTER OF MASS &bull; JOINT RESPONSE</p>
+                    </div>
+                    <div class="rs-footer-item">
+                        <h5 data-cms="pres-rs-foot2-title">02 &bull; SENSOR SIM &amp; SLAM</h5>
+                        <p data-cms="pres-rs-foot2-desc">RAYCASTING LIDAR &bull; SLAM MAPPING</p>
+                    </div>
+                    <div class="rs-footer-item">
+                        <h5 data-cms="pres-rs-foot3-title">03 &bull; SYNTHETIC DATA</h5>
+                        <p data-cms="pres-rs-foot3-desc">UNITY PERCEPTION &bull; CV TRAINING</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 6: AI — Three Algorithms -->
+        <section class="step" id="step6">
+            <div class="presentation-panel left detail-panel" style="max-width: 620px; padding: 24px 28px; background: rgba(8, 12, 22, 0.90); backdrop-filter: blur(22px); border: 1px solid rgba(0,229,255,0.15);">
+                <div class="panel-header">
+                    <span class="badge" style="color: var(--accent-cyan);">LAYER 3 // ARTIFICIAL INTELLIGENCE</span>
+                    <div class="line-dec"></div>
+                </div>
+
+                <h2 style="font-size: 3rem; font-weight: 900; color: #fff; line-height: 1.0; margin-bottom: 2px;">THREE
+                </h2>
+                <h2
+                    style="font-size: 2.2rem; font-weight: 700; color: var(--accent-cyan); line-height: 1.0; margin-bottom: 8px; letter-spacing: 3px;">
+                    ALGORITHMS</h2>
+                <p style="font-size: 0.9rem; color: #7090a0; margin-bottom: 22px; letter-spacing: 1px;">Each solving a
+                    different engineering problem.</p>
+
+                <!-- Algorithm 01 -->
+                <div
+                    style="background: rgba(0,229,255,0.04); border: 1px solid rgba(0,229,255,0.15); border-radius: 8px; padding: 14px 16px; margin-bottom: 10px;">
+                    <div
+                        style="font-family: 'Chakra Petch', sans-serif; font-size: 0.75rem; color: var(--accent-cyan); letter-spacing: 2px; margin-bottom: 6px;">
+                        ALGORITHM 01 — COMPUTER VISION</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                        <span
+                            style="font-size: 0.78rem; color: #c8d8e8; background: rgba(255,255,255,0.04); padding: 3px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08);">Component
+                            Detection + Classification</span>
+                        <span
+                            style="font-size: 0.78rem; color: #c8d8e8; background: rgba(255,255,255,0.04); padding: 3px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08);">Bounding
+                            Boxes + Confidence Scores</span>
+                        <span
+                            style="font-size: 0.78rem; color: #c8d8e8; background: rgba(255,255,255,0.04); padding: 3px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08);">YOLO-equivalent
+                            pipeline</span>
+                        <span
+                            style="font-size: 0.78rem; color: #ffb700; background: rgba(255,183,0,0.06); padding: 3px 10px; border-radius: 4px; border: 1px solid rgba(255,183,0,0.2);">&#128161;
+                            Future: Defect Detection (cracks, rust)</span>
+                    </div>
+                </div>
+
+                <!-- Algorithm 02 -->
+                <div
+                    style="background: rgba(0,229,255,0.04); border: 1px solid rgba(0,229,255,0.15); border-radius: 8px; padding: 14px 16px; margin-bottom: 10px;">
+                    <div
+                        style="font-family: 'Chakra Petch', sans-serif; font-size: 0.75rem; color: var(--accent-cyan); letter-spacing: 2px; margin-bottom: 8px;">
+                        ALGORITHM 02 — PREDICTIVE MAINTENANCE</div>
+                    <p style="font-size: 0.8rem; color: #c8d8e8; margin-bottom: 8px;">Random Forest Classifier &bull;
+                        Trained on Kaggle dataset (10,000 samples)</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; font-size: 0.75rem;">
+                        <div
+                            style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.07); border-radius: 5px; padding: 6px 8px;">
+                            <div style="color: var(--accent-cyan); font-weight: 700;">N1 RPM</div>
+                            <div style="color: #708090;">Fan speed</div>
+                        </div>
+                        <div
+                            style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.07); border-radius: 5px; padding: 6px 8px;">
+                            <div style="color: var(--accent-cyan); font-weight: 700;">EGT</div>
+                            <div style="color: #708090;">Exhaust Temp</div>
+                        </div>
+                        <div
+                            style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.07); border-radius: 5px; padding: 6px 8px;">
+                            <div style="color: var(--accent-cyan); font-weight: 700;">Fuel Flow</div>
+                            <div style="color: #708090;">Consumption rate</div>
+                        </div>
+                        <div
+                            style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.07); border-radius: 5px; padding: 6px 8px;">
+                            <div style="color: var(--accent-cyan); font-weight: 700;">EPR</div>
+                            <div style="color: #708090;">Pressure Ratio</div>
+                        </div>
+                        <div
+                            style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.07); border-radius: 5px; padding: 6px 8px;">
+                            <div style="color: var(--accent-cyan); font-weight: 700;">Vibration</div>
+                            <div style="color: #708090;">Mechanical anomalies</div>
+                        </div>
+                    </div>
+                    <div
+                        style="margin-top: 10px; font-style: italic; font-size: 0.82rem; color: #ffb700; border-left: 3px solid #ffb700; padding-left: 10px;">
+                        "Predicts failures BEFORE they happen — not after."
+                    </div>
+                </div>
+
+                <!-- Algorithm 03 -->
+                <div
+                    style="background: rgba(0,229,255,0.04); border: 1px solid rgba(0,229,255,0.15); border-radius: 8px; padding: 12px 16px;">
+                    <div
+                        style="font-family: 'Chakra Petch', sans-serif; font-size: 0.75rem; color: var(--accent-cyan); letter-spacing: 2px; margin-bottom: 4px;">
+                        ALGORITHM 03 — CONVERSATIONAL AI</div>
+                    <p style="font-size: 0.8rem; color: #7090a0; margin: 0;">RAG-powered aviation knowledge assistant
+                        &darr; See next slide</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 7: AI Chatbot -->
+        <section class="step" id="step7">
+            <div style="display: flex; gap: 20px; align-items: stretch; max-width: 880px; margin: 0 auto; width: 100%; padding: 0 16px;">
+
+                <!-- Left: Video (phone frame) -->
+                <div style="flex-shrink: 0; width: 200px; display: flex; flex-direction: column;">
+                    <div style="background: rgba(8,12,22,0.95); border: 1px solid rgba(0,229,255,0.25); border-radius: 20px; overflow: hidden; box-shadow: 0 0 25px rgba(0,229,255,0.12); flex: 1; display: flex; flex-direction: column;">
+                        <div style="background: rgba(0,0,0,0.6); padding: 8px 12px; font-family: 'Chakra Petch', sans-serif; font-size: 0.65rem; color: var(--accent-cyan); letter-spacing: 2px; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid rgba(0,229,255,0.1);">
+                            <span style="width: 6px; height: 6px; background: #ff4444; border-radius: 50%; display: inline-block;"></span>
+                            LIVE DEMO
+                        </div>
+                        <video autoplay muted loop playsinline style="width: 100%; flex: 1; object-fit: cover; display: block;">
+                            <source src="assets/chat_guide.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+
+                <!-- Right: Content panel -->
+                <div style="flex: 1; background: rgba(8,12,22,0.90); backdrop-filter: blur(22px); border: 1px solid rgba(0,229,255,0.15); border-radius: 14px; padding: 22px 26px;">
+                    <div class="panel-header">
+                        <span class="badge" style="color: var(--accent-cyan);">LAYER 3.5 // AI ASSISTANT</span>
+                        <div class="line-dec"></div>
+                    </div>
+
+                    <h2 style="font-size: 2rem; font-weight: 900; color: #fff; line-height: 1.0; margin-bottom: 2px;">YOUR AI</h2>
+                    <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--accent-cyan); line-height: 1.0; margin-bottom: 16px; letter-spacing: 3px;">INSTRUCTOR</h2>
+
+                    <!-- Two Modes -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+                        <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 12px;">
+                            <div style="font-size: 0.68rem; color: #7090a0; font-weight: 700; letter-spacing: 1px; margin-bottom: 5px;">&#128274; SYSTEM MODE</div>
+                            <div style="font-size: 0.75rem; color: #c8d8e8; line-height: 1.55;">Aviation-restricted<br>RAG on AMM Manual<br><span style="color: var(--accent-cyan); font-weight: 600;">~2,000 pages</span></div>
+                        </div>
+                        <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 12px;">
+                            <div style="font-size: 0.68rem; color: #7090a0; font-weight: 700; letter-spacing: 1px; margin-bottom: 5px;">&#127760; CONTEXT MODE</div>
+                            <div style="font-size: 0.75rem; color: #c8d8e8; line-height: 1.55;">Open like Gemini<br>GPT + Gemini APIs<br><span style="color: #a0b0c0;">General queries</span></div>
+                        </div>
+                    </div>
+
+                    <!-- 6 Features -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-bottom: 12px;">
+                        <div style="background: rgba(0,229,255,0.04); border: 1px solid rgba(0,229,255,0.1); border-radius: 6px; padding: 6px 8px; font-size: 0.72rem; color: #d0e0f0;">&#127919; Next Step</div>
+                        <div style="background: rgba(0,229,255,0.04); border: 1px solid rgba(0,229,255,0.1); border-radius: 6px; padding: 6px 8px; font-size: 0.72rem; color: #d0e0f0;">&#128737; Safety</div>
+                        <div style="background: rgba(0,229,255,0.04); border: 1px solid rgba(0,229,255,0.1); border-radius: 6px; padding: 6px 8px; font-size: 0.72rem; color: #d0e0f0;">&#128202; Analytics</div>
+                        <div style="background: rgba(0,229,255,0.04); border: 1px solid rgba(0,229,255,0.1); border-radius: 6px; padding: 6px 8px; font-size: 0.72rem; color: #d0e0f0;">&#128228; Send to Doctor</div>
+                        <div style="background: rgba(0,229,255,0.04); border: 1px solid rgba(0,229,255,0.1); border-radius: 6px; padding: 6px 8px; font-size: 0.72rem; color: #d0e0f0;">&#127897; Voice Input</div>
+                        <div style="background: rgba(0,229,255,0.04); border: 1px solid rgba(0,229,255,0.1); border-radius: 6px; padding: 6px 8px; font-size: 0.72rem; color: #d0e0f0;">&#129302; Ask Robot</div>
+                    </div>
+
+                    <!-- Knowledge Source -->
+                    <div style="background: rgba(0,229,255,0.05); border: 1px solid rgba(0,229,255,0.3); border-radius: 8px; padding: 10px 14px; margin-bottom: 10px;">
+                        <div style="font-size: 0.68rem; color: var(--accent-cyan); font-weight: 700; letter-spacing: 1px; margin-bottom: 4px;">&#11088; KNOWLEDGE SOURCE</div>
+                        <div style="font-size: 0.8rem; color: #e0eaf5;">Official Aircraft Maintenance Manual</div>
+                        <div style="font-size: 0.72rem; color: #607080; margin-top: 2px;">~2,000 pages — Not random internet data.</div>
+                    </div>
+
+                    <!-- Offline Badge -->
+                    <div style="display: inline-flex; align-items: center; gap: 7px; background: rgba(0,200,100,0.08); border: 1px solid rgba(0,200,100,0.28); color: #00d882; padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px;">
+                        &#10003; WORKS FULLY OFFLINE &mdash; RAG-powered semantic search
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Step 8: Layer 4 — Web Analytics -->
+        <section class="step" id="step8">
+            <div class="presentation-panel right detail-panel" style="max-width: 680px; padding: 24px 28px; background: rgba(8, 12, 22, 0.90); backdrop-filter: blur(22px); border: 1px solid rgba(0,229,255,0.15);">
+                <div class="panel-header">
+                    <span class="badge" style="color: var(--accent-cyan);">LAYER 4 // LIVE OPERATIONS CENTER</span>
+                    <div class="line-dec"></div>
+                </div>
+
+                <h2 style="font-size: 2.8rem; font-weight: 900; color: #fff; line-height: 1.0; margin-bottom: 2px;">LIVE</h2>
+                <h2 style="font-size: 2rem; font-weight: 700; color: var(--accent-cyan); line-height: 1.0; margin-bottom: 6px; letter-spacing: 3px;">OPERATIONS CENTER</h2>
+                <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(0,229,255,0.06); border: 1px solid rgba(0,229,255,0.2); padding: 4px 14px; border-radius: 20px; margin-bottom: 20px;">
+                    <span style="width: 6px; height: 6px; background: #00e090; border-radius: 50%; display: inline-block;"></span>
+                    <span style="font-size: 0.78rem; color: #a0c8d8; font-family: 'Chakra Petch', sans-serif; letter-spacing: 1px;">aerotwin.onrender.com</span>
+                </div>
+
+                <!-- Two User Cards -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
+
+                    <!-- Student -->
+                    <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 14px;">
+                        <div style="font-size: 0.72rem; color: #90a0b0; font-weight: 700; letter-spacing: 1px; margin-bottom: 10px;">&#127891; FOR THE STUDENT</div>
+                        <div style="display: flex; flex-direction: column; gap: 5px; font-size: 0.75rem;">
+                            <div style="color: #ff6b6b;">&#10007; Doesn't know where they go wrong</div>
+                            <div style="color: #ff6b6b;">&#10007; No formal progress documentation</div>
+                            <div style="height: 1px; background: rgba(255,255,255,0.06); margin: 4px 0;"></div>
+                            <div style="color: #00e090; font-weight: 600;">&#10003; Active Logger — every action tracked live</div>
+                            <div style="color: #00e090; font-weight: 600;">&#10003; Speed &bull; Accuracy &bull; Safety analysis</div>
+                        </div>
+                    </div>
+
+                    <!-- Instructor -->
+                    <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 14px;">
+                        <div style="font-size: 0.72rem; color: #90a0b0; font-weight: 700; letter-spacing: 1px; margin-bottom: 10px;">&#128104;&#8205;&#127979; FOR THE INSTRUCTOR</div>
+                        <div style="display: flex; flex-direction: column; gap: 5px; font-size: 0.75rem;">
+                            <div style="color: #ff6b6b;">&#10007; Can't monitor every student</div>
+                            <div style="color: #ff6b6b;">&#10007; Hard to detect patterns manually</div>
+                            <div style="height: 1px; background: rgba(255,255,255,0.06); margin: 4px 0;"></div>
+                            <div style="color: #00e090; font-weight: 600;">&#10003; Live Remote Monitoring</div>
+                            <div style="color: #00e090; font-weight: 600;">&#10003; Auto-Generated PDF Reports</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Logger Tracks -->
+                <div style="background: rgba(0,229,255,0.04); border: 1px solid rgba(0,229,255,0.15); border-radius: 8px; padding: 12px 16px;">
+                    <div style="font-family: 'Chakra Petch', sans-serif; font-size: 0.68rem; color: var(--accent-cyan); letter-spacing: 2px; margin-bottom: 10px;">ACTIVE LOGGER TRACKS</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                        <span style="background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.2); color: #c8dde8; font-size: 0.72rem; padding: 4px 10px; border-radius: 4px;">15 Components</span>
+                        <span style="background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.2); color: #c8dde8; font-size: 0.72rem; padding: 4px 10px; border-radius: 4px;">Task Progress</span>
+                        <span style="background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.2); color: #c8dde8; font-size: 0.72rem; padding: 4px 10px; border-radius: 4px;">Speed vs Average</span>
+                        <span style="background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.2); color: #c8dde8; font-size: 0.72rem; padding: 4px 10px; border-radius: 4px;">AI Inquiries</span>
+                        <span style="background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.2); color: #c8dde8; font-size: 0.72rem; padding: 4px 10px; border-radius: 4px;">Activity Timeline</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 9: SDG + Scalability -->
+        <section class="step" id="step9">
+            <div class="presentation-panel left detail-panel" style="max-width: 660px; padding: 24px 28px; background: rgba(8, 12, 22, 0.90); backdrop-filter: blur(22px); border: 1px solid rgba(0,229,255,0.15);">
+                <div class="panel-header">
+                    <span class="badge" style="color: var(--accent-cyan);">IMPACT // SDG &amp; SCALABILITY</span>
+                    <div class="line-dec"></div>
+                </div>
+
+                <h2 style="font-size: 2.8rem; font-weight: 900; color: #fff; line-height: 1.0; margin-bottom: 2px;">SUSTAINABLE</h2>
+                <h2 style="font-size: 2rem; font-weight: 700; color: var(--accent-cyan); line-height: 1.0; margin-bottom: 20px; letter-spacing: 3px;">IMPACT</h2>
+
+                <!-- 4 SDG Cards -->
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px;">
+                    <div style="display: flex; align-items: flex-start; gap: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 10px 14px;">
+                        <span style="font-size: 1.4rem; flex-shrink: 0;">&#127891;</span>
+                        <div>
+                            <div style="font-family:'Chakra Petch',sans-serif; font-size: 0.68rem; color: var(--accent-cyan); letter-spacing: 2px; margin-bottom: 2px;">SDG 4 &mdash; QUALITY EDUCATION</div>
+                            <div style="font-size: 0.78rem; color: #c0d0e0;">Training without location, time, or cost barriers</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 10px 14px;">
+                        <span style="font-size: 1.4rem; flex-shrink: 0;">&#128188;</span>
+                        <div>
+                            <div style="font-family:'Chakra Petch',sans-serif; font-size: 0.68rem; color: var(--accent-cyan); letter-spacing: 2px; margin-bottom: 2px;">SDG 8 &mdash; DECENT WORK</div>
+                            <div style="font-size: 0.78rem; color: #c0d0e0;">710,000 global jobs ahead — we prepare them</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 10px 14px;">
+                        <span style="font-size: 1.4rem; flex-shrink: 0;">&#127959;</span>
+                        <div>
+                            <div style="font-family:'Chakra Petch',sans-serif; font-size: 0.68rem; color: var(--accent-cyan); letter-spacing: 2px; margin-bottom: 2px;">SDG 9 &mdash; INNOVATION &amp; INFRASTRUCTURE</div>
+                            <div style="font-size: 0.78rem; color: #c0d0e0;">Digital infrastructure built by Arab hands</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 10px 14px;">
+                        <span style="font-size: 1.4rem; flex-shrink: 0;">&#127757;</span>
+                        <div>
+                            <div style="font-family:'Chakra Petch',sans-serif; font-size: 0.68rem; color: var(--accent-cyan); letter-spacing: 2px; margin-bottom: 2px;">SDG 13 &mdash; CLIMATE ACTION</div>
+                            <div style="font-size: 0.78rem; color: #c0d0e0;">Zero fuel burn vs real engine training</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scalability Box -->
+                <div style="background: rgba(0,229,255,0.04); border: 1px solid rgba(0,229,255,0.18); border-radius: 8px; padding: 12px 16px;">
+                    <div style="font-family:'Chakra Petch',sans-serif; font-size: 0.68rem; color: var(--accent-cyan); letter-spacing: 2px; margin-bottom: 10px;">SCALABILITY</div>
+                    <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.8rem; color: #c0d0e0;">
+                        <div>&#9992;&#65039; More engines, parts &amp; scenarios</div>
+                        <div>&#9889; High-voltage electrical sectors</div>
+                        <div>&#127981; Any zero-error-tolerance industry</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 10: Max Thrust -->
+        <section class="step" id="step10">
+            <div class="presentation-panel center focus-panel">
+                <div class="data-stream"></div>
+                <div class="panel-header justify-center">
+                    <span class="badge warning" id="critical-badge" data-cms="pres-step6-badge">06 // PERFORMANCE</span>
+                </div>
+                <h2 data-cms="pres-step6-title">Maximum Thrust Test</h2>
+                <p data-cms="pres-step6-desc">Simulating extreme operational conditions. Notice the rotational velocity
+                    and heat dissipation mechanics.</p>
+
+                <div class="live-data">
+                    <div class="data-row">
+                        <span data-cms="pres-live1-label">CORE RPM</span>
+                        <span class="value critical" id="rpm-counter">0</span>
+                    </div>
+                    <div class="data-row">
+                        <span data-cms="pres-live2-label">EXHAUST TEMP</span>
+                        <span class="value critical" data-cms="pres-live2-value">1,850 °C</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Step 11: Conclusion -->
+        <section class="step center-step" id="step11">
+            <div class="conclusion-container">
+                <img src="assets/Team_Logo.png" alt="TechNest Logo" class="conclusion-logo">
+                <h1 class="conclusion-title">FOUR TECHNOLOGIES.<br><span class="accent">ONE SYSTEM.</span></h1>
+                <p class="conclusion-subtitle">Built by TechNest Team</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Timeline -->
+    <div class="presentation-timeline">
+        <div class="timeline-dot" id="dot-step1"></div>
+        <div class="timeline-dot" id="dot-step2"></div>
+        <div class="timeline-dot" id="dot-step3"></div>
+        <div class="timeline-dot" id="dot-step4"></div>
+        <div class="timeline-dot" id="dot-step5"></div>
+        <div class="timeline-dot" id="dot-step6"></div>
+        <div class="timeline-dot" id="dot-step7"></div>
+        <div class="timeline-dot" id="dot-step8"></div>
+        <div class="timeline-dot" id="dot-step9"></div>
+        <div class="timeline-dot" id="dot-step10"></div>
+        <div class="timeline-dot" id="dot-step11"></div>
+        <div class="timeline-line">
+            <div class="timeline-progress" id="timeline-progress"></div>
+        </div>
+    </div>
+
+    <!-- ─── FOOTER ─── -->
+    <footer class="main-footer" data-cms="global-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="footer-logo-box">
+                    <img src="logo.png" alt="AeroTwin Logo">
+                    <span>AEROTWIN XR<br>MISSION SYSTEMS</span>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="news.html">News</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="features.html">Features</a></li>
+                    <li><a href="guide.html">Guide</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="support.html">Support</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="faq.html">FAQs</a></li>
+                    <li><a href="updates.html">Updates</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                    <li><a href="cookies.html">Cookie Policy</a></li>
+                    <li><a href="#">Licensing</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-bottom-logo">AEROTWIN</div>
+            <div class="footer-icons">
+                <span>📡</span> <span>⚙️</span> <span>☁️</span> <span>✈️</span>
+            </div>
+            <div class="footer-copy">
+                <span>Copyright © 2026</span>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ─── SCRIPTS ─── -->
+    <script>
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+    </script>
+    <script src="cms.js"></script>
+
+    <!-- Presentation App Scripts -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script type="module" src="presentation-main.js"></script>
+    <script>
+        (function () {
+            var btn = document.getElementById('nav-hamburger');
+            var links = document.querySelector('.nav-links');
+            var overlay = document.getElementById('nav-overlay');
+            if (!btn) return;
+            function openMenu() { btn.classList.add('open'); links.classList.add('open'); overlay.classList.add('visible'); document.body.style.overflow = 'hidden'; }
+            function closeMenu() { btn.classList.remove('open'); links.classList.remove('open'); overlay.classList.remove('visible'); document.body.style.overflow = ''; }
+            btn.addEventListener('click', function () { btn.classList.contains('open') ? closeMenu() : openMenu(); });
+            overlay.addEventListener('click', closeMenu);
+            links.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', closeMenu); });
+        })();
+    </script>
+</body>
+
+</html>

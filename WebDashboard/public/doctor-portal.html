@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -995,6 +995,20 @@
             }
         }
     </script>
+    <script>
+        (function() {
+            var btn = document.getElementById('nav-hamburger');
+            var links = document.querySelector('.nav-links');
+            var overlay = document.getElementById('nav-overlay');
+            if (!btn) return;
+            function openMenu() { btn.classList.add('open'); links.classList.add('open'); overlay.classList.add('visible'); document.body.style.overflow = 'hidden'; }
+            function closeMenu() { btn.classList.remove('open'); links.classList.remove('open'); overlay.classList.remove('visible'); document.body.style.overflow = ''; }
+            btn.addEventListener('click', function() { btn.classList.contains('open') ? closeMenu() : openMenu(); });
+            overlay.addEventListener('click', closeMenu);
+            links.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', closeMenu); });
+        })();
+    </script>
 </body>
 </html>
+
 

@@ -253,6 +253,94 @@ const TN_SCHEMA = {
                 ]
             }
         ]
+    },
+    presentation: {
+        title: "🎬 Presentation Page Content",
+        sections: [
+            {
+                id: "pres-step1",
+                title: "Step 01 — Overview (Intro Panel)",
+                type: "fixed",
+                fields: [
+                    { key: "pres-step1-badge",    label: "Badge Text",         type: "text",     width: "50%" },
+                    { key: "pres-step1-title",    label: "Main Title",         type: "text",     width: "50%" },
+                    { key: "pres-step1-subtitle", label: "Highlighted Word",   type: "text",     width: "50%" },
+                    { key: "pres-step1-desc",     label: "Description",        type: "textarea", width: "100%" },
+                    { key: "pres-stat1-value",    label: "Stat 1 Value",       type: "text",     width: "33%" },
+                    { key: "pres-stat1-label",    label: "Stat 1 Label",       type: "text",     width: "33%" },
+                    { key: "pres-stat2-value",    label: "Stat 2 Value",       type: "text",     width: "33%" },
+                    { key: "pres-stat2-label",    label: "Stat 2 Label",       type: "text",     width: "33%" },
+                    { key: "pres-stat3-value",    label: "Stat 3 Value",       type: "text",     width: "33%" },
+                    { key: "pres-stat3-label",    label: "Stat 3 Label",       type: "text",     width: "33%" },
+                    { key: "pres-scroll-hint",    label: "Scroll Hint Text",   type: "text",     width: "100%" }
+                ]
+            },
+            {
+                id: "pres-step2",
+                title: "Step 02 — 3D Grid Decomposition",
+                type: "fixed",
+                fields: [
+                    { key: "pres-step2-badge",         label: "Badge Text",      type: "text",     width: "50%" },
+                    { key: "pres-step2-title",         label: "Section Title",   type: "text",     width: "50%" },
+                    { key: "pres-step2-desc",          label: "Description",     type: "textarea", width: "100%" },
+                    { key: "pres-step2-feature-title", label: "Feature Title",   type: "text",     width: "50%" },
+                    { key: "pres-step2-feature-desc",  label: "Feature Detail",  type: "text",     width: "50%" }
+                ]
+            },
+            {
+                id: "pres-step3",
+                title: "Step 03 — Micro-Analysis",
+                type: "fixed",
+                fields: [
+                    { key: "pres-step3-badge",  label: "Badge Text",    type: "text",     width: "50%" },
+                    { key: "pres-step3-title",  label: "Section Title", type: "text",     width: "50%" },
+                    { key: "pres-step3-desc",   label: "Description",   type: "textarea", width: "100%" },
+                    { key: "pres-mat1-value",   label: "Material 1 Value", type: "text", width: "25%" },
+                    { key: "pres-mat1-label",   label: "Material 1 Label", type: "text", width: "25%" },
+                    { key: "pres-mat2-value",   label: "Material 2 Value", type: "text", width: "25%" },
+                    { key: "pres-mat2-label",   label: "Material 2 Label", type: "text", width: "25%" }
+                ]
+            },
+            {
+                id: "pres-step4",
+                title: "Step 04 — Reassembly",
+                type: "fixed",
+                fields: [
+                    { key: "pres-step4-badge",  label: "Badge Text",         type: "text",     width: "50%" },
+                    { key: "pres-step4-title",  label: "Section Title",      type: "text",     width: "50%" },
+                    { key: "pres-step4-desc",   label: "Description",        type: "textarea", width: "100%" },
+                    { key: "pres-bar1-label",   label: "Progress Bar 1 Name", type: "text",    width: "50%" },
+                    { key: "pres-bar1-pct",     label: "Progress Bar 1 %",    type: "text",    width: "50%" },
+                    { key: "pres-bar2-label",   label: "Progress Bar 2 Name", type: "text",    width: "50%" },
+                    { key: "pres-bar2-pct",     label: "Progress Bar 2 %",    type: "text",    width: "50%" }
+                ]
+            },
+            {
+                id: "pres-step5",
+                title: "Step 05 — Thermodynamics",
+                type: "fixed",
+                fields: [
+                    { key: "pres-step5-badge",  label: "Badge Text",    type: "text",     width: "50%" },
+                    { key: "pres-step5-title",  label: "Section Title", type: "text",     width: "50%" },
+                    { key: "pres-step5-desc",   label: "Description",   type: "textarea", width: "100%" },
+                    { key: "pres-step5-feat1",  label: "Feature 1",     type: "text",     width: "100%" },
+                    { key: "pres-step5-feat2",  label: "Feature 2",     type: "text",     width: "100%" }
+                ]
+            },
+            {
+                id: "pres-step6",
+                title: "Step 06 — Max Thrust (Performance)",
+                type: "fixed",
+                fields: [
+                    { key: "pres-step6-badge",   label: "Badge Text",        type: "text",     width: "50%" },
+                    { key: "pres-step6-title",   label: "Section Title",     type: "text",     width: "50%" },
+                    { key: "pres-step6-desc",    label: "Description",       type: "textarea", width: "100%" },
+                    { key: "pres-live1-label",   label: "Live Data 1 Label", type: "text",     width: "50%" },
+                    { key: "pres-live2-label",   label: "Live Data 2 Label", type: "text",     width: "50%" },
+                    { key: "pres-live2-value",   label: "Live Data 2 Value", type: "text",     width: "50%" }
+                ]
+            }
+        ]
     }
 };
 

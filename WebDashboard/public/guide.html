@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -19,10 +19,14 @@
         :root {
             --vr-cyan: #00f2ff;
             --vr-purple: #b535f6;
+            --vr-pink: #ff006e;
             --vr-blue: #092c55;
             --vr-neon: #fff;
             --vr-bg: #010308;
             --tech-font: 'Share Tech Mono', monospace;
+            --glow-1: rgba(0, 242, 255, 0.6);
+            --glow-2: rgba(181, 53, 246, 0.6);
+            --glow-3: rgba(255, 0, 110, 0.4);
         }
 
         body.guide-body {
@@ -31,17 +35,47 @@
             overflow-x: hidden;
             font-family: 'Rajdhani', sans-serif;
             position: relative;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="4" fill="%2300f2ff" opacity="0.8"/><circle cx="16" cy="16" r="8" fill="none" stroke="%2300f2ff" stroke-width="1" opacity="0.4"/></svg>') 16 16, auto;
+        }
+
+        /* ----- CUSTOM CURSOR TRAIL EFFECT ----- */
+        .cursor-trail {
+            position: fixed;
+            pointer-events: none;
+            width: 10px;
+            height: 10px;
+            border: 2px solid var(--vr-cyan);
+            border-radius: 50%;
+            z-index: 9999;
+            box-shadow: 0 0 10px var(--vr-cyan);
+            animation: trailFade 0.6s ease-out forwards;
+        }
+
+        @keyframes trailFade {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
         }
 
         /* ----- 3D VR GRID BACKGROUND ----- */
         .vr-grid-bg {
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             pointer-events: none;
             z-index: -2;
             perspective: 800px;
             overflow: hidden;
         }
+
         .vr-grid-bg::after {
             content: '';
             position: absolute;
@@ -49,33 +83,59 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background-image: 
-                linear-gradient(rgba(0, 242, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 242, 255, 0.1) 1px, transparent 1px);
+            background-image:
+                linear-gradient(rgba(0, 242, 255, 0.12) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 255, 0.12) 1px, transparent 1px);
             background-size: 80px 80px;
             transform: rotateX(60deg) translateY(0);
             transform-origin: center center;
             animation: gridMove 15s linear infinite;
-            filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.3));
+            filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.4));
         }
+
         @keyframes gridMove {
-            0% { transform: rotateX(60deg) translateY(0); }
-            100% { transform: rotateX(60deg) translateY(80px); }
+            0% {
+                transform: rotateX(60deg) translateY(0);
+            }
+
+            100% {
+                transform: rotateX(60deg) translateY(80px);
+            }
         }
+
         .vr-grid-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: radial-gradient(circle at 50% 30%, transparent 0%, var(--vr-bg) 85%);
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(ellipse at 50% 30%, rgba(181, 53, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(0, 242, 255, 0.1) 0%, transparent 60%);
             z-index: -1;
             pointer-events: none;
         }
+
         .cyber-particles {
             position: fixed;
-            top:0; left:0; width:100vw; height:100vh;
-            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzIiBoZWlnaHQ9IjMiPjxyZWN0IHdpZHRoPSIzIiBoZWlnaHQ9IjMiIGZpbGw9IiMwMGYyZmYiIGZpbGwtb3BhY2l0eT0iMC4xIi8+PC9zdmc+');
-            opacity: 0.3;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiMwMGYyZmYiIGZpbGwtb3BhY2l0eT0iMC4xNSIvPjwvc3ZnPg==');
+            opacity: 0.5;
             z-index: -1;
             pointer-events: none;
+            animation: particleShift 20s linear infinite;
+        }
+
+        @keyframes particleShift {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(100px);
+            }
         }
 
         /* ----- HEADER ----- */
@@ -90,6 +150,7 @@
             max-width: 1400px;
             margin: 0 auto;
         }
+
         .guide-header-box h1 {
             font-size: 85px;
             font-weight: 900;
@@ -97,11 +158,42 @@
             letter-spacing: 2px;
             margin: 0;
             line-height: 1;
-            text-shadow: 0 0 30px rgba(0,242,255,0.4);
             color: #fff;
             position: relative;
             display: inline-block;
+            background: linear-gradient(135deg, var(--vr-cyan), var(--vr-purple), var(--vr-pink), var(--vr-cyan));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease infinite, titleGlow 2s ease-in-out infinite alternate;
+            filter: drop-shadow(0 0 20px rgba(0, 242, 255, 0.4)) drop-shadow(0 0 40px rgba(181, 53, 246, 0.3));
         }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes titleGlow {
+            0% {
+                filter: drop-shadow(0 0 20px rgba(0, 242, 255, 0.4)) drop-shadow(0 0 40px rgba(181, 53, 246, 0.3));
+            }
+
+            100% {
+                filter: drop-shadow(0 0 40px rgba(0, 242, 255, 0.8)) drop-shadow(0 0 60px rgba(181, 53, 246, 0.6)) drop-shadow(0 0 20px rgba(255, 0, 110, 0.4));
+            }
+        }
+
         .guide-header-box h1::before {
             content: "SYSTEM_ROOT // VR_ENVIRONMENT";
             position: absolute;
@@ -111,8 +203,46 @@
             font-family: var(--tech-font);
             letter-spacing: 5px;
             color: var(--vr-cyan);
-            text-shadow: 0 0 10px var(--vr-cyan);
+            text-shadow: 0 0 10px var(--vr-cyan), 0 0 20px rgba(181, 53, 246, 0.5);
+            animation: codeFlicker 3s ease-in-out infinite, codeGlitch 0.3s ease-in-out 2s infinite;
         }
+
+        @keyframes codeFlicker {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        @keyframes codeGlitch {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-2px);
+            }
+
+            40% {
+                transform: translateX(2px);
+            }
+
+            60% {
+                transform: translateX(-1px);
+            }
+
+            80% {
+                transform: translateX(1px);
+            }
+        }
+
         .guide-header-box p {
             font-size: 24px;
             color: #cbd5e1;
@@ -120,11 +250,26 @@
             margin: 0;
             font-weight: 400;
             border-left: 4px solid var(--vr-cyan);
-            padding-left: 20px;
-            background: linear-gradient(90deg, rgba(0, 242, 255, 0.08) 0%, transparent 100%);
             padding: 25px;
-            box-shadow: inset 5px 0 0 0 rgba(0,242,255,0.5);
+            padding-left: 20px;
+            background: linear-gradient(90deg, rgba(0, 242, 255, 0.12) 0%, rgba(181, 53, 246, 0.08) 50%, transparent 100%);
+            box-shadow: inset 5px 0 0 0 rgba(0, 242, 255, 0.5), 0 0 20px rgba(0, 242, 255, 0.1);
             font-family: var(--tech-font);
+            animation: slideInLeft 0.8s ease-out;
+            border-radius: 5px;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         /* ----- CONTAINER & FEED ----- */
@@ -139,21 +284,41 @@
             gap: 80px;
             align-items: start;
         }
+
         @media (max-width: 1024px) {
-            .guide-container { grid-template-columns: 1fr; }
+            .guide-container {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* Sidebar HUD */
         .sidebar-hud {
             position: sticky;
             top: 120px;
-            background: rgba(3, 7, 18, 0.6);
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(0, 242, 255, 0.2);
+            background: rgba(3, 7, 18, 0.7);
+            backdrop-filter: blur(30px);
+            border: 2px solid rgba(0, 242, 255, 0.3);
             padding: 40px;
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%);
-            box-shadow: 0 15px 40px rgba(0, 242, 255, 0.05), inset 0 0 20px rgba(0,242,255,0.05);
+            box-shadow: 0 0 40px rgba(0, 242, 255, 0.15),
+                inset 0 0 30px rgba(0, 242, 255, 0.08),
+                0 0 60px rgba(181, 53, 246, 0.1);
+            animation: sidebarFloat 3s ease-in-out infinite;
+            border-image: linear-gradient(135deg, rgba(0, 242, 255, 0.5), rgba(181, 53, 246, 0.3)) 1;
         }
+
+        @keyframes sidebarFloat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
         .sidebar-hud h3 {
             font-family: var(--tech-font);
             color: var(--vr-cyan);
@@ -163,19 +328,68 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            text-shadow: 0 0 10px rgba(0,242,255,0.5);
+            text-shadow: 0 0 15px rgba(0, 242, 255, 0.7);
+            animation: titleFlicker 2s ease-in-out infinite;
         }
-        .sidebar-hud h3::before { 
-            content: ""; display: block; width: 12px; height: 12px; 
-            background: var(--vr-cyan); box-shadow: 0 0 10px var(--vr-cyan);
-            animation: pulse 1.5s infinite alternate; 
+
+        @keyframes titleFlicker {
+
+            0%,
+            100% {
+                text-shadow: 0 0 15px rgba(0, 242, 255, 0.7);
+            }
+
+            50% {
+                text-shadow: 0 0 25px rgba(181, 53, 246, 0.8), 0 0 10px rgba(0, 242, 255, 0.5);
+            }
         }
+
+        .sidebar-hud h3::before {
+            content: "";
+            display: block;
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(135deg, var(--vr-cyan), var(--vr-purple));
+            box-shadow: 0 0 15px var(--vr-cyan), 0 0 10px var(--vr-purple);
+            animation: pulse 1.5s infinite alternate, spinGlow 3s linear infinite;
+            border-radius: 50%;
+        }
+
         @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(1.5); opacity: 0.3; }
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1.5);
+                opacity: 0.3;
+            }
         }
-        
-        .hud-links { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 20px; }
+
+        @keyframes spinGlow {
+            0% {
+                box-shadow: 0 0 15px var(--vr-cyan), 0 0 10px var(--vr-purple);
+            }
+
+            50% {
+                box-shadow: 0 0 25px var(--vr-purple), 0 0 15px var(--vr-cyan);
+            }
+
+            100% {
+                box-shadow: 0 0 15px var(--vr-cyan), 0 0 10px var(--vr-purple);
+            }
+        }
+
+        .hud-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
         .hud-links li a {
             color: #94a3b8;
             text-decoration: none;
@@ -184,21 +398,52 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: 0.3s;
-            border-bottom: 1px dashed rgba(255,255,255,0.1);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
             padding-bottom: 10px;
             text-transform: uppercase;
+            position: relative;
+            padding: 10px 0;
         }
+
+        .hud-links li a::before {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--vr-cyan), var(--vr-purple), var(--vr-pink));
+            transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 0 10px var(--vr-cyan);
+        }
+
         .hud-links li a:hover {
             color: var(--vr-neon);
-            border-bottom-color: var(--vr-cyan);
+            border-bottom-color: transparent;
             padding-left: 15px;
+            text-shadow: 0 0 15px rgba(0, 242, 255, 0.7), 0 0 10px rgba(181, 53, 246, 0.5);
+            transform: translateX(5px);
         }
-        .hud-links li a span.data { 
-            font-family: var(--tech-font); 
-            font-size: 12px; 
+
+        .hud-links li a:hover::before {
+            width: 100%;
+            box-shadow: 0 0 20px var(--vr-cyan), 0 0 10px var(--vr-purple);
+        }
+
+        .hud-links li a span.data {
+            font-family: var(--tech-font);
+            font-size: 12px;
             color: var(--vr-cyan);
-            opacity: 0.7; 
+            opacity: 0.7;
+            transition: all 0.3s;
+            text-shadow: 0 0 5px var(--vr-cyan);
+        }
+
+        .hud-links li a:hover span.data {
+            opacity: 1;
+            text-shadow: 0 0 15px var(--vr-cyan), 0 0 8px var(--vr-purple);
+            color: var(--vr-pink);
         }
 
         /* ----- INSANE 3D CARDS ----- */
@@ -215,48 +460,123 @@
             align-items: center;
             position: relative;
         }
-        .guide-card-3d:nth-child(even) { grid-template-columns: 1fr 1.2fr; direction: rtl; }
-        .guide-card-3d:nth-child(even) .content-stack { direction: ltr; }
-        @media (max-width: 900px) {
-            .guide-card-3d { grid-template-columns: 1fr !important; direction: ltr !important; gap: 40px; }
+
+        .guide-card-3d:nth-child(even) {
+            grid-template-columns: 1fr 1.2fr;
+            direction: rtl;
         }
 
-        /* 3D Media Box / Hologram Container */
+        .guide-card-3d:nth-child(even) .content-stack {
+            direction: ltr;
+        }
+
+        @media (max-width: 900px) {
+            .guide-card-3d {
+                grid-template-columns: 1fr !important;
+                direction: ltr !important;
+                gap: 40px;
+            }
+        }
+
+        /* 3D Media Box / Hologram Container - NOW SQUARE WITH CYBERNETIC BORDERS */
         .media-3d-wrapper {
             position: relative;
             width: 100%;
-            height: 450px;
+            aspect-ratio: 1 / 1;
             perspective: 2000px;
             transform-style: preserve-3d;
         }
-        
+
+        /* Cybernetic Corner Effects */
+        .media-3d-wrapper::before,
+        .media-3d-wrapper::after {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--vr-cyan);
+            z-index: 15;
+            box-shadow: inset 0 0 10px rgba(0, 242, 255, 0.5);
+            animation: cornerPulse 2s ease-in-out infinite;
+        }
+
+        .media-3d-wrapper::before {
+            top: -5px;
+            left: -5px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .media-3d-wrapper::after {
+            bottom: -5px;
+            right: -5px;
+            border-left: none;
+            border-top: none;
+        }
+
+        @keyframes cornerPulse {
+
+            0%,
+            100% {
+                box-shadow: inset 0 0 10px rgba(0, 242, 255, 0.5);
+            }
+
+            50% {
+                box-shadow: inset 0 0 20px rgba(181, 53, 246, 0.8), 0 0 15px rgba(0, 242, 255, 0.6);
+            }
+        }
+
         .media-3d-box {
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(0, 242, 255, 0.2);
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(0, 242, 255, 0.4);
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: flex;
             justify-content: center;
             align-items: center;
-            clip-path: polygon(30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px);
-            backdrop-filter: blur(5px);
+            clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 40px rgba(0, 242, 255, 0.15),
+                inset 0 0 40px rgba(181, 53, 246, 0.08),
+                0 0 80px rgba(181, 53, 246, 0.1);
+            overflow: hidden;
         }
+
         .media-3d-box::before {
             content: "";
             position: absolute;
             inset: 0;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 2px,
-                rgba(0, 242, 255, 0.05) 2px,
-                rgba(0, 242, 255, 0.05) 4px
-            );
+            background: repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 242, 255, 0.08) 2px,
+                    rgba(0, 242, 255, 0.08) 4px);
             pointer-events: none;
             z-index: 2;
+            animation: scanlineMove 8s linear infinite;
+        }
+
+        @keyframes scanlineMove {
+            0% {
+                transform: translateY(-100%);
+            }
+
+            100% {
+                transform: translateY(100%);
+            }
+        }
+
+        .media-3d-box::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(181, 53, 246, 0.15), transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(0, 242, 255, 0.1), transparent 50%);
+            pointer-events: none;
+            z-index: 1;
         }
 
         /* Media Elements inside 3D */
@@ -266,56 +586,123 @@
             height: 100%;
             object-fit: cover;
             transform: translateZ(60px);
-            transition: 0.5s;
-            filter: saturate(1.2) contrast(1.1);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: saturate(1.3) contrast(1.15) brightness(1.05);
         }
+
         .media-3d-wrapper:hover .media-3d-box img,
         .media-3d-wrapper:hover .media-3d-box video {
-            transform: translateZ(100px) scale(1.05);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            transform: translateZ(100px) scale(1.1);
+            filter: saturate(1.6) contrast(1.3) brightness(1.2) drop-shadow(0 0 30px rgba(0, 242, 255, 0.5));
+        }
+
+        /* Enhanced 3D Box Hover Effect */
+        .media-3d-wrapper:hover .media-3d-box {
+            border-color: rgba(181, 53, 246, 0.8);
+            box-shadow: 0 0 80px rgba(0, 242, 255, 0.4),
+                inset 0 0 50px rgba(181, 53, 246, 0.2),
+                0 0 120px rgba(181, 53, 246, 0.2),
+                0 30px 80px rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.3);
         }
 
         /* Scanner Line Hologram Effect */
         .scanner-line {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 2px;
-            background: var(--vr-cyan);
-            box-shadow: 0 0 15px var(--vr-cyan), 0 0 30px var(--vr-cyan);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--vr-cyan), transparent);
+            box-shadow: 0 0 20px var(--vr-cyan), 0 0 40px rgba(181, 53, 246, 0.6), 0 0 10px var(--vr-pink);
             transform: translateZ(90px);
             animation: scanHolo 2.5s ease-in-out infinite alternate;
             z-index: 5;
         }
+
         @keyframes scanHolo {
-            0% { top: 0%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; height: 10px; background: rgba(0,242,255,0.5); }
-            100% { top: 100%; opacity: 0; }
+            0% {
+                top: 0%;
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+                height: 20px;
+                background: linear-gradient(90deg, transparent, rgba(181, 53, 246, 0.8), transparent);
+            }
+
+            100% {
+                top: 100%;
+                opacity: 0;
+            }
         }
 
         /* UI Accents on Media */
         .crosshair {
             position: absolute;
-            width: 40px; height: 40px;
+            width: 40px;
+            height: 40px;
             border: 2px solid var(--vr-cyan);
             pointer-events: none;
             transform: translateZ(80px);
             z-index: 10;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.6);
+            transition: all 0.3s;
         }
-        .crosshair.tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
-        .crosshair.br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
-        
+
+        .crosshair.tl {
+            top: 20px;
+            left: 20px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .crosshair.br {
+            bottom: 20px;
+            right: 20px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .media-3d-wrapper:hover .crosshair {
+            box-shadow: 0 0 30px rgba(181, 53, 246, 1), 0 0 15px var(--vr-pink);
+            border-color: var(--vr-purple);
+            transform: translateZ(80px) scale(1.2);
+        }
+
         .vector-hud {
             position: absolute;
-            bottom: 25px; left: 35px;
+            bottom: 25px;
+            left: 35px;
             font-family: var(--tech-font);
             color: var(--vr-cyan);
             font-size: 14px;
             transform: translateZ(120px);
-            background: rgba(0, 0, 0, 0.8);
-            padding: 6px 12px;
-            border: 1px solid rgba(0, 242, 255, 0.4);
-            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.95);
+            padding: 10px 16px;
+            border: 2px solid rgba(0, 242, 255, 0.6);
+            backdrop-filter: blur(15px);
             z-index: 10;
+            box-shadow: 0 0 25px rgba(0, 242, 255, 0.5), inset 0 0 15px rgba(181, 53, 246, 0.1);
+            animation: hudPulse 2s ease-in-out infinite;
+            border-radius: 3px;
+        }
+
+        @keyframes hudPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 25px rgba(0, 242, 255, 0.5), inset 0 0 15px rgba(181, 53, 246, 0.1);
+            }
+
+            50% {
+                box-shadow: 0 0 40px rgba(0, 242, 255, 0.8), 0 0 20px var(--vr-purple), inset 0 0 20px rgba(181, 53, 246, 0.2);
+            }
         }
 
         /* Content Stack Typography */
@@ -329,15 +716,43 @@
             display: inline-block;
             font-family: var(--tech-font);
             color: var(--vr-bg);
-            background: var(--vr-cyan);
-            padding: 6px 20px;
+            background: linear-gradient(135deg, var(--vr-cyan), var(--vr-purple), var(--vr-pink));
+            background-size: 200% 200%;
+            padding: 10px 28px;
             font-size: 14px;
             font-weight: 800;
             letter-spacing: 3px;
             margin-bottom: 25px;
-            box-shadow: 0 0 20px rgba(0,242,255,0.4);
+            box-shadow: 0 0 35px rgba(0, 242, 255, 0.6),
+                0 0 20px rgba(181, 53, 246, 0.5),
+                0 0 10px rgba(255, 0, 110, 0.3);
             position: relative;
             clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+            animation: badgeGlow 2s ease-in-out infinite, badgeShift 3s ease-in-out infinite;
+        }
+
+        @keyframes badgeGlow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 35px rgba(0, 242, 255, 0.6), 0 0 20px rgba(181, 53, 246, 0.5), 0 0 10px rgba(255, 0, 110, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 50px rgba(0, 242, 255, 0.9), 0 0 35px rgba(181, 53, 246, 0.8), 0 0 20px rgba(255, 0, 110, 0.6);
+            }
+        }
+
+        @keyframes badgeShift {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
         }
 
         .content-stack h2 {
@@ -347,42 +762,130 @@
             line-height: 1.1;
             text-transform: uppercase;
             color: #fff;
-            text-shadow: 0px 4px 15px rgba(0,0,0,0.5);
+            background: linear-gradient(135deg, var(--vr-cyan), var(--vr-purple), var(--vr-pink), var(--vr-cyan));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleSlideIn 0.8s ease-out, titleGradientShift 4s ease infinite;
+            filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.3)) drop-shadow(0 0 10px rgba(181, 53, 246, 0.2));
         }
+
+        @keyframes titleSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes titleGradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
         .content-stack p {
             font-size: 20px;
-            color: #94a3b8;
+            color: #cbd5e1;
             line-height: 1.8;
             margin: 0;
+            animation: descFadeIn 0.8s ease-out 0.2s both;
         }
-        
+
+        @keyframes descFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         /* Floating background text identifier */
         .bg-watermark {
-             position: absolute;
-             top: -40px;
-             left: 0;
-             font-size: 140px;
-             font-weight: 900;
-             color: rgba(255,255,255,0.02);
-             font-family: var(--tech-font);
-             pointer-events: none;
-             z-index: -1;
-             white-space: nowrap;
-             user-select: none;
+            position: absolute;
+            top: -40px;
+            left: 0;
+            font-size: 140px;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.02);
+            font-family: var(--tech-font);
+            pointer-events: none;
+            z-index: -1;
+            white-space: nowrap;
+            user-select: none;
+            animation: watermarkFloat 6s ease-in-out infinite;
         }
+
+        @keyframes watermarkFloat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+                opacity: 0.02;
+            }
+
+            50% {
+                transform: translateY(-20px);
+                opacity: 0.05;
+            }
+        }
+
         .guide-card-3d:nth-child(even) .bg-watermark {
-            left: auto; right: 0;
+            left: auto;
+            right: 0;
             text-align: right;
         }
 
         /* Tech Detail Lines */
         .tech-line {
             width: 100px;
-            height: 2px;
-            background: linear-gradient(90deg, var(--vr-cyan), transparent);
+            height: 3px;
+            background: linear-gradient(90deg, var(--vr-cyan), var(--vr-purple), var(--vr-pink), transparent);
             margin-top: 30px;
+            animation: lineExpand 0.8s ease-out 0.4s both, lineGlow 2s ease-in-out infinite 0.4s;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.6), 0 0 10px rgba(181, 53, 246, 0.4);
         }
 
+        @keyframes lineExpand {
+            from {
+                width: 0;
+                opacity: 0;
+            }
+
+            to {
+                width: 100px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes lineGlow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(0, 242, 255, 0.6), 0 0 10px rgba(181, 53, 246, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 35px rgba(0, 242, 255, 0.9), 0 0 20px rgba(181, 53, 246, 0.7), 0 0 10px var(--vr-pink);
+            }
+        }
     </style>
 </head>
 
@@ -394,19 +897,24 @@
     <div class="cyber-particles"></div>
 
     <!-- ─── NAVBAR ─── -->
-        <nav id="navbar">
+    <nav id="navbar">
         <a href="index.html" class="nav-logo">
             <img src="logo.png" alt="AeroTwin Logo">
             AeroTwin XR
         </a>
+        <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        <div class="nav-overlay" id="nav-overlay"></div>
         <ul class="nav-links">
             <li><a href="index.html" class="nav-home">Home</a></li>
             <li><a href="news.html" class="nav-news">News</a></li>
             <li><a href="about.html" class="nav-about">About</a></li>
             <li><a href="features.html" class="nav-features">Features</a></li>
             <li><a href="guide.html" class="nav-guide active">Guide</a></li>
+            <li><a href="presentation.html" class="nav-presentation">Presentation</a></li>
             <li><a href="leaderboard.html" class="nav-leaderboard">Leaderboard</a></li>
-            <li><a href="doctor-portal.html" class="nav-join-link" style="color: var(--accent-cyan); font-weight: 800; border: 1px solid var(--accent-cyan); padding: 5px 15px; border-radius: 5px; margin-right: 10px;">JOIN</a></li>
+            <li><a href="doctor-portal.html" class="nav-join-link"
+                    style="color: var(--accent-cyan); font-weight: 800; border: 1px solid var(--accent-cyan); padding: 5px 15px; border-radius: 5px; margin-right: 10px;">JOIN</a>
+            </li>
             <li><a href="pricing.html" class="btn-get-started">Get Started</a></li>
         </ul>
     </nav>
@@ -414,19 +922,22 @@
     <!-- ─── HEADER ─── -->
     <header class="guide-header-box gs-fade">
         <h1 data-cms="guide-hero-title">VIRTUAL LOGIC</h1>
-        <p data-cms="guide-hero-desc">Explore the immersive capabilities of the AeroTwin VR environment. From in-game telemetry to the unified multiplayer communication systems, learn how our Unity-powered engine takes aviation to the next level.</p>
+        <p data-cms="guide-hero-desc">Explore the immersive capabilities of the AeroTwin VR environment. From in-game
+            telemetry to the unified multiplayer communication systems, learn how our Unity-powered engine takes
+            aviation to the next level.</p>
     </header>
 
     <!-- ─── MAIN CONTENT ─── -->
     <div class="guide-container">
-        
+
         <!-- Sticky HUD Sidebar -->
         <aside class="sidebar-hud gs-fade">
             <h3>SYS_CONSOLE</h3>
             <ul class="hud-links" id="dynamic-toc">
                 <!-- Links will be dynamically populated via JS -->
             </ul>
-            <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(0,242,255,0.2); font-family: var(--tech-font); color: #94a3b8; font-size: 12px; line-height: 1.8;">
+            <div
+                style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(0,242,255,0.2); font-family: var(--tech-font); color: #94a3b8; font-size: 12px; line-height: 1.8;">
                 > RENDER_TARGET: VRD-99 <br>
                 > ENGINE: UNITY_ATXR <br>
                 > LATENCY: 12ms <br>
@@ -438,15 +949,16 @@
         <main class="guide-feed" data-cms-array="guide-steps-array">
             <!-- This is the loop template executed by cms.js -->
             <article class="guide-card-3d gs-fade">
-                
+
                 <div class="media-3d-wrapper js-tilt">
                     <div class="media-3d-box">
                         <div class="scanner-line"></div>
                         <div class="crosshair tl"></div>
                         <div class="crosshair br"></div>
                         <div class="vector-hud">POS: X:00.0 Y:00.0 Z:0.0</div>
-                        
-                        <video media-lazy="{{mediaUrl}}" autoplay loop muted playsinline style="display: {{videoDisplay}}"></video>
+
+                        <video media-lazy="{{mediaUrl}}" autoplay loop muted playsinline
+                            style="display: {{videoDisplay}}"></video>
                         <img media-lazy="{{mediaUrl}}" alt="{{title}}" style="display: {{imageDisplay}}">
                     </div>
                 </div>
@@ -465,15 +977,48 @@
 
     <!-- ─── CALL TO ACTION BANNER ─── -->
     <section style="padding: 100px 0;text-align: center;position: relative;z-index: 10;">
-        <div style="max-width: 800px; margin: 0 auto; background: rgba(0,242,255,0.05); padding: 60px; border: 1px solid rgba(0,242,255,0.2); backdrop-filter: blur(10px); clip-path: polygon(30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px);">
-            <h2 style="font-size: 40px; margin-bottom: 20px; color: #fff; font-weight: 800; font-family: var(--tech-font);">[ OVERRIDE_ACCESS ]</h2>
-            <p style="color: #94a3b8; font-size: 20px; margin-bottom: 40px;">Need deep technical modifications? Access the raw engineering documentations or contact VR support directly.</p>
-            <a href="support.html" class="btn-main" style="padding: 15px 40px; font-size: 16px; background: var(--vr-cyan); color: #000; font-weight: 900; font-family: var(--tech-font); letter-spacing: 2px;">INITIATE CHAT</a>
+        <div
+            style="max-width: 800px; margin: 0 auto; background: linear-gradient(135deg, rgba(0,242,255,0.12), rgba(181, 53, 246, 0.12), rgba(255, 0, 110, 0.08)); padding: 60px; border: 2px solid; border-image: linear-gradient(135deg, rgba(0,242,255,0.5), rgba(181, 53, 246, 0.5), rgba(255, 0, 110, 0.3)) 1; backdrop-filter: blur(15px); clip-path: polygon(30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px); box-shadow: 0 0 60px rgba(0, 242, 255, 0.2), 0 0 40px rgba(181, 53, 246, 0.15), inset 0 0 40px rgba(181, 53, 246, 0.08); animation: ctaBounce 3s ease-in-out infinite;">
+            <h2
+                style="font-size: 40px; margin-bottom: 20px; color: #fff; font-weight: 800; font-family: var(--tech-font); background: linear-gradient(135deg, var(--vr-cyan), var(--vr-purple), var(--vr-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: ctaTextGlow 2s ease-in-out infinite;">
+                [ OVERRIDE_ACCESS ]</h2>
+            <p style="color: #cbd5e1; font-size: 20px; margin-bottom: 40px;">Need deep technical modifications? Access
+                the raw engineering documentations or contact VR support directly.</p>
+            <a href="support.html" class="btn-main"
+                style="padding: 15px 40px; font-size: 16px; background: linear-gradient(135deg, var(--vr-cyan), var(--vr-purple), var(--vr-pink)); color: #000; font-weight: 900; font-family: var(--tech-font); letter-spacing: 2px; transition: all 0.3s; box-shadow: 0 0 30px rgba(0, 242, 255, 0.6), 0 0 20px rgba(181, 53, 246, 0.4); border: none; cursor: pointer; border-radius: 5px;"
+                onmouseover="this.style.boxShadow='0 0 60px rgba(0, 242, 255, 1), 0 0 40px rgba(181, 53, 246, 0.8), 0 0 20px rgba(255, 0, 110, 0.6)'; this.style.transform='scale(1.08) translateY(-3px)';"
+                onmouseout="this.style.boxShadow='0 0 30px rgba(0, 242, 255, 0.6), 0 0 20px rgba(181, 53, 246, 0.4)'; this.style.transform='scale(1) translateY(0)';">INITIATE
+                CHAT</a>
         </div>
+        <style>
+            @keyframes ctaBounce {
+
+                0%,
+                100% {
+                    transform: translateY(0);
+                }
+
+                50% {
+                    transform: translateY(-15px);
+                }
+            }
+
+            @keyframes ctaTextGlow {
+
+                0%,
+                100% {
+                    filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.4));
+                }
+
+                50% {
+                    filter: drop-shadow(0 0 25px rgba(181, 53, 246, 0.8)) drop-shadow(0 0 15px rgba(0, 242, 255, 0.6)) drop-shadow(0 0 10px rgba(255, 0, 110, 0.4));
+                }
+            }
+        </style>
     </section>
 
     <!-- ─── FOOTER ─── -->
-        <footer class="main-footer" data-cms="global-footer">
+    <footer class="main-footer" data-cms="global-footer">
         <div class="footer-grid">
             <div class="footer-brand">
                 <div class="footer-logo-box">
@@ -489,6 +1034,8 @@
                     <li><a href="about.html">About</a></li>
                     <li><a href="features.html">Features</a></li>
                     <li><a href="guide.html">Guide</a></li>
+                    <li><a href="presentation.html">Presentation</a></li>
+            <li><a href="presentation.html" class="nav-presentation">Presentation</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -505,7 +1052,7 @@
                 <ul>
                     <li><a href="privacy.html">Privacy Policy</a></li>
                     <li><a href="terms.html">Terms of Service</a></li>
-                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="cookies.html">Cookie Policy</a></li>
                     <li><a href="#">Licensing</a></li>
                 </ul>
             </div>
@@ -525,6 +1072,19 @@
 
     <!-- ─── SCRIPTS ─── -->
     <script>
+        // Custom Cursor Trail Effect
+        document.addEventListener('mousemove', (e) => {
+            if (Math.random() > 0.8) {
+                const trail = document.createElement('div');
+                trail.className = 'cursor-trail';
+                trail.style.left = e.clientX + 'px';
+                trail.style.top = e.clientY + 'px';
+                document.body.appendChild(trail);
+
+                setTimeout(() => trail.remove(), 600);
+            }
+        });
+
         // Navbar scroll effect
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
@@ -542,13 +1102,13 @@
                 cards.forEach((card, index) => {
                     const id = 'sys-step-' + index;
                     card.id = id; // Set unique ID for scrolling anchor
-                    
+
                     const titleEl = card.querySelector('h2');
                     const title = titleEl ? titleEl.innerText : 'SYS_OBJ_' + index;
-                    
+
                     const li = document.createElement('li');
-                    li.innerHTML = `<a href="#${id}"><span>${title}</span> <span class="data">[OBJ.${index+1}]</span></a>`;
-                    
+                    li.innerHTML = `<a href="#${id}"><span>${title}</span> <span class="data">[OBJ.${index + 1}]</span></a>`;
+
                     li.querySelector('a').addEventListener('click', (e) => {
                         e.preventDefault();
                         const headerOffset = 100;
@@ -556,7 +1116,7 @@
                         const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
                         window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
                     });
-                    
+
                     toc.appendChild(li);
                 });
             }
@@ -571,7 +1131,7 @@
 
             // 1. Array of crazy Entry Animations for GSAP
             gsap.registerPlugin(ScrollTrigger);
-            
+
             const animationStyles = [
                 { x: -200, rotationY: 45, opacity: 0 }, // Slide from Left, twisted
                 { x: 200, rotationY: -45, opacity: 0 }, // Slide from Right, twisted
@@ -579,10 +1139,10 @@
                 { z: -500, rotationX: 45, opacity: 0 }  // Fly in from deep Z-space
             ];
 
-            gsap.utils.toArray('.gs-fade').forEach(function(elem, i) {
+            gsap.utils.toArray('.gs-fade').forEach(function (elem, i) {
                 // Determine animation style
                 let startProps = { opacity: 0 };
-                
+
                 // Keep sidebar and headers standard
                 if (elem.classList.contains('guide-header-box') || elem.classList.contains('sidebar-hud')) {
                     startProps.y = 100;
@@ -597,15 +1157,15 @@
                 ScrollTrigger.create({
                     trigger: elem,
                     start: "top 85%",
-                    onEnter: function() {
-                        gsap.fromTo(elem, startProps, { 
-                            duration: 1.4, 
-                            x: 0, y: 0, z: 0, 
-                            scale: 1, 
-                            opacity: 1, 
-                            rotationX: 0, rotationY: 0, 
-                            ease: "power3.out", 
-                            overwrite: "auto" 
+                    onEnter: function () {
+                        gsap.fromTo(elem, startProps, {
+                            duration: 1.4,
+                            x: 0, y: 0, z: 0,
+                            scale: 1,
+                            opacity: 1,
+                            rotationX: 0, rotationY: 0,
+                            ease: "power3.out",
+                            overwrite: "auto"
                         });
                     },
                     once: true
@@ -619,13 +1179,13 @@
                     const rect = el.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
-                    
+
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
-                    
+
                     const rotateX = ((y - centerY) / centerY) * -15; // Max 15deg
                     const rotateY = ((x - centerX) / centerX) * 15;
-                    
+
                     gsap.to(box, {
                         duration: 0.3,
                         rotationX: rotateX,
@@ -634,7 +1194,7 @@
                         ease: "power2.out"
                     });
                 });
-                
+
                 el.addEventListener('mouseleave', () => {
                     gsap.to(box, {
                         duration: 1,
@@ -651,9 +1211,20 @@
 
     </script>
     <script src="cms.js?v=3.0"></script>
+    <script>
+        (function() {
+            var btn = document.getElementById('nav-hamburger');
+            var links = document.querySelector('.nav-links');
+            var overlay = document.getElementById('nav-overlay');
+            if (!btn) return;
+            function openMenu() { btn.classList.add('open'); links.classList.add('open'); overlay.classList.add('visible'); document.body.style.overflow = 'hidden'; }
+            function closeMenu() { btn.classList.remove('open'); links.classList.remove('open'); overlay.classList.remove('visible'); document.body.style.overflow = ''; }
+            btn.addEventListener('click', function() { btn.classList.contains('open') ? closeMenu() : openMenu(); });
+            overlay.addEventListener('click', closeMenu);
+            links.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', closeMenu); });
+        })();
+    </script>
 </body>
 
 </html>
-
-
 

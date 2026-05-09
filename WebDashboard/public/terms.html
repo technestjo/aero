@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -126,12 +126,15 @@
             <img src="logo.png" alt="AeroTwin Logo">
             AeroTwin XR
         </a>
+        <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        <div class="nav-overlay" id="nav-overlay"></div>
         <ul class="nav-links">
             <li><a href="index.html" class="nav-home">Home</a></li>
             <li><a href="news.html" class="nav-news">News</a></li>
             <li><a href="about.html" class="nav-about">About</a></li>
             <li><a href="features.html" class="nav-features">Features</a></li>
             <li><a href="guide.html" class="nav-guide">Guide</a></li>
+            <li><a href="presentation.html" class="nav-presentation">Presentation</a></li>
             <li><a href="leaderboard.html" class="nav-leaderboard">Leaderboard</a></li>
             <li><a href="doctor-portal.html" class="nav-join-link" style="color: var(--accent-cyan); font-weight: 800; border: 1px solid var(--accent-cyan); padding: 5px 15px; border-radius: 5px; margin-right: 10px;">JOIN</a></li>
             <li><a href="pricing.html" class="btn-get-started">Get Started</a></li>
@@ -155,7 +158,7 @@
                 <!-- AGREEMENT -->
                 <h2>AGREEMENT TO OUR LEGAL TERMS</h2>
                 <p>We are <strong>TechNest (operated by Ali Al-Ashqar)</strong> ("Company," "we," "us," "our").</p>
-                <p>We operate <a href="https://univr.onrender.com/" target="_blank">https://univr.onrender.com/</a>, as
+                <p>We operate <a href="https://www.aerotwinvr.com/" target="_blank">https://www.aerotwinvr.com/</a>, as
                     well as the <strong>AeroTwin XR</strong> application, and any other related products and services
                     that refer or link to these legal terms (the "Legal Terms") (collectively, the "Services").</p>
                 <p>You can contact us by email at <a href="mailto:technestjo@gmail.com">technestjo@gmail.com</a>.</p>
@@ -578,8 +581,8 @@
                 <p>
                     <strong>TechNest (operated by Ali Al-Ashqar)</strong><br>
                     Email: <a href="mailto:technestjo@gmail.com">technestjo@gmail.com</a><br>
-                    Website: <a href="https://univr.onrender.com/contact"
-                        target="_blank">https://univr.onrender.com/contact</a>
+                    Website: <a href="https://www.aerotwinvr.com/contact"
+                        target="_blank">https://www.aerotwinvr.com/contact</a>
                 </p>
 
                 <div style="margin-top: 50px; border-top: 1px solid #333; padding-top: 20px;">
@@ -607,6 +610,8 @@
                     <li><a href="about.html">About</a></li>
                     <li><a href="features.html">Features</a></li>
                     <li><a href="guide.html">Guide</a></li>
+                    <li><a href="presentation.html">Presentation</a></li>
+            <li><a href="presentation.html" class="nav-presentation">Presentation</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -623,7 +628,7 @@
                 <ul>
                     <li><a href="privacy.html">Privacy Policy</a></li>
                     <li><a href="terms.html">Terms of Service</a></li>
-                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="cookies.html">Cookie Policy</a></li>
                     <li><a href="#">Licensing</a></li>
                 </ul>
             </div>
@@ -640,9 +645,24 @@
             </div>
         </div>
     </footer>
+    <script>
+        (function() {
+            var btn = document.getElementById('nav-hamburger');
+            var links = document.querySelector('.nav-links');
+            var overlay = document.getElementById('nav-overlay');
+            if (!btn) return;
+            function openMenu() { btn.classList.add('open'); links.classList.add('open'); overlay.classList.add('visible'); document.body.style.overflow = 'hidden'; }
+            function closeMenu() { btn.classList.remove('open'); links.classList.remove('open'); overlay.classList.remove('visible'); document.body.style.overflow = ''; }
+            btn.addEventListener('click', function() { btn.classList.contains('open') ? closeMenu() : openMenu(); });
+            overlay.addEventListener('click', closeMenu);
+            links.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', closeMenu); });
+        })();
+    </script>
 </body>
 
 </html>
+
+
 
 
 

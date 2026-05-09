@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -223,6 +223,7 @@
                         <button class="cms-sub-btn" onclick="tnSwitchPage('leaderboard')" id="subnav-leaderboard">🏆 Leaderboard</button>
                         <button class="cms-sub-btn" onclick="tnSwitchPage('pricing')" id="subnav-pricing">💰 Pricing Plans</button>
                         <button class="cms-sub-btn" onclick="tnSwitchPage('updates')" id="subnav-updates">🔄 Updates</button>
+                        <button class="cms-sub-btn" onclick="tnSwitchPage('presentation')" id="subnav-presentation">🎬 Presentation</button>
                         <button class="cms-sub-btn" onclick="tnSwitchPage('global')" id="subnav-global" style="margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px;">🌐 Global</button>
                     </div>
                 <li class="admin-only"><button onclick="switchTab('debug')" id="tab-debug" class="nav-btn">🔬 Stream Debug</button></li>
@@ -314,6 +315,9 @@
                     <div>
                         <h2 class="text-gradient">AeroTwin CMS <span style="font-size: 14px; color: var(--text-dim); font-weight: 400; padding: 5px 15px; background: rgba(255,255,255,0.05); border-radius: 50px;">Live Editor</span></h2>
                         <p class="text-dim">Update website content globally with real-time preview and synchronization.</p>
+                    </div>
+                    <div class="dashboard-controls">
+                        <button onclick="seedDatabase()" class="btn-secondary" style="background: rgba(255,165,0,0.1); color: #ffaa00; border: 1px solid rgba(255,165,0,0.3);" title="Reset all content to defaults">🌱 Seed Database</button>
                     </div>
                 </div>
                 <!-- NEW TECHNEST-STYLE CMS LAYOUT -->
@@ -984,6 +988,9 @@
             document.getElementById('liveStreamModal').style.display = 'none';
         }
 
+        // Alias used by the Seed Database button in CMS header
+        async function seedDatabase() { return syncCmsDefaults(); }
+
         async function syncCmsDefaults() {
             if(!confirm("This will import all default website text into your CMS. Continue?")) return;
             try {
@@ -1123,4 +1130,5 @@
 
 </body>
 </html>
+
 

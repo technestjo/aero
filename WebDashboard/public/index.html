@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -17,12 +17,15 @@
             <img src="logo.png" alt="AeroTwin Logo">
             AeroTwin XR
         </a>
+        <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        <div class="nav-overlay" id="nav-overlay"></div>
         <ul class="nav-links">
             <li><a href="index.html" class="nav-home active">Home</a></li>
             <li><a href="news.html" class="nav-news">News</a></li>
             <li><a href="about.html" class="nav-about">About</a></li>
             <li><a href="features.html" class="nav-features">Features</a></li>
             <li><a href="guide.html" class="nav-guide">Guide</a></li>
+            <li><a href="presentation.html" class="nav-presentation">Presentation</a></li>
             <li><a href="leaderboard.html" class="nav-leaderboard">Leaderboard</a></li>
             <li><a href="doctor-portal.html" class="nav-join-link" style="color: var(--accent-cyan); font-weight: 800; border: 1px solid var(--accent-cyan); padding: 5px 15px; border-radius: 5px; margin-right: 10px;">JOIN</a></li>
             <li><a href="pricing.html" class="btn-get-started">Get Started</a></li>
@@ -53,6 +56,12 @@
 
         <!-- The Canvas that renders the 3D rotating frames -->
         <canvas id="vr-canvas"></canvas>
+
+        <!-- Loading Overlay for 3D Model -->
+        <div id="vr-loading-overlay">
+            <div class="vr-spinner"></div>
+            <div id="vr-loading-text">Loading 3D Engine...</div>
+        </div>
 
         <!-- The Video that appears "behind" the lenses once inside -->
         <div class="video-container" id="video-container">
@@ -124,6 +133,8 @@
                     <li><a href="about.html">About</a></li>
                     <li><a href="features.html">Features</a></li>
                     <li><a href="guide.html">Guide</a></li>
+                    <li><a href="presentation.html">Presentation</a></li>
+            <li><a href="presentation.html" class="nav-presentation">Presentation</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -140,7 +151,7 @@
                 <ul>
                     <li><a href="privacy.html">Privacy Policy</a></li>
                     <li><a href="terms.html">Terms of Service</a></li>
-                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="cookies.html">Cookie Policy</a></li>
                     <li><a href="#">Licensing</a></li>
                 </ul>
             </div>
@@ -159,6 +170,10 @@
     </footer>
 
     <!-- ─── SCRIPTS ─── -->
+    <!-- Three.js + GLTFLoader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script>
@@ -172,130 +187,223 @@
             }
         });
 
-        // ─── SMART DYNAMIC CANVAS ENGINE ───
+        // ─── 3D CINEMATIC ENGINE ───
         gsap.registerPlugin(ScrollTrigger);
 
         const canvas = document.getElementById("vr-canvas");
-        const context = canvas.getContext("2d");
+        const loadingOverlay = document.getElementById("vr-loading-overlay");
+        const loadingText = document.getElementById("vr-loading-text");
+
+        // Scene Setup
+        const scene = new THREE.Scene();
         
-        // Define internal canvas resolution
-        canvas.width = 1920; 
-        canvas.height = 1080;
+        // Camera Setup
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.z = 5;
 
-        const images = [];
-        const vrSequence = { progress: 0 }; // scrubs from 0.0 to 1.0
-        let consecutiveMisses = 0;
+        // Renderer
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.0;
+        renderer.outputEncoding = THREE.sRGBEncoding;
 
-        // Auto-detect & preload images sequentially
-        function loadNextImage(index) {
-            // Stop searching to prevent 404s, we have 35 frames
-            if (index >= 35) {
-                if (images.length === 0) render();
-                return;
-            }
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        scene.add(ambientLight);
 
-            const img = new Image();
-            img.onload = () => {
-                images.push(img);
-                if (index === 0) render(); // initial paint once first frame is found
-                loadNextImage(index + 1);  // keep probing
-            };
-            img.onerror = () => {
-                if (images.length === 0) render(); // Still empty, show placeholder
-            };
-            img.src = `frames/${(index + 1).toString().padStart(4, '0')}.png`;
-        }
+        const dirLight = new THREE.DirectionalLight(0xffffff, 2);
+        dirLight.position.set(5, 5, 5);
+        scene.add(dirLight);
+
+        const fillLight = new THREE.DirectionalLight(0x00f2ff, 1.2);
+        fillLight.position.set(-5, 0, -5);
+        scene.add(fillLight);
+
+        const backLight = new THREE.PointLight(0xff00ff, 2, 20);
+        backLight.position.set(0, 3, -5);
+        scene.add(backLight);
+
+        // Load 3D Model
+        let questModel = null;
+        let isVideoTransitioned = false;
+
+        const loader = new THREE.GLTFLoader();
         
-        // Start the smart loader!
-        loadNextImage(0);
-
-        // Render current progress
-        function render() {
-            context.clearRect(0, 0, canvas.width, canvas.height);
+        loader.load('assets/quest3.glb', function (gltf) {
+            questModel = gltf.scene;
             
-            if (images.length > 0) {
-                // Map the 0-1 progress to the currently loaded frames
-                const maxIndex = images.length - 1;
-                const frameToDraw = Math.floor(vrSequence.progress * maxIndex);
-                const img = images[frameToDraw];
-                
-                if (img && img.complete && img.naturalWidth > 0) {
-                    const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
-                    const x = (canvas.width / 2) - (img.width / 2) * scale;
-                    const y = (canvas.height / 2) - (img.height / 2) * scale;
-                    context.drawImage(img, x, y, img.width * scale, img.height * scale);
-                }
-            } else {
-                // FALLBACK PLACEHOLDER (Waits for files)
-                context.fillStyle = "rgba(0,0,0,0)";
-                context.fillRect(0,0, canvas.width, canvas.height);
-                
-                context.fillStyle = "#00f2ff";
-                context.font = "bold 60px Orbitron, sans-serif";
-                context.textAlign = "center";
-                context.textBaseline = "middle";
-                context.fillText(`[ SMART 3D ENGINE : WAITING FOR IMAGES ]`, canvas.width/2, canvas.height/2);
-                
-                context.font = "30px Rajdhani, sans-serif";
-                context.fillStyle = "#94a3b8";
-                context.fillText("Save your transparent frames as: public/frames/0001.png, 0002.png... It will auto-detect them!", canvas.width/2, canvas.height/2 + 80);
-            }
-        }
+            // Center model
+            const box = new THREE.Box3().setFromObject(questModel);
+            const center = box.getCenter(new THREE.Vector3());
+            questModel.position.x += (questModel.position.x - center.x);
+            questModel.position.y += (questModel.position.y - center.y);
+            questModel.position.z += (questModel.position.z - center.z);
+            
+            // Initial positioning & scale
+            questModel.scale.set(1.8, 1.8, 1.8); 
+            // Position for aesthetic front branding look
+            questModel.rotation.y = -Math.PI / 5; 
+            questModel.rotation.x = 0.05;
+            questModel.rotation.z = -0.05;
+            scene.add(questModel);
 
-        // Run an initial render for the placeholder
-        render();
+            // Hide loader smoothly
+            gsap.to(loadingOverlay, { opacity: 0, duration: 0.5, onComplete: () => { if(loadingOverlay) loadingOverlay.style.display = 'none'; } });
 
-        // Master Timeline Setup
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: "#scroll-stage",
-                start: "top top",     
-                end: "+=4000",        
-                pin: true,            
-                scrub: 1,             
-                anticipatePin: 1
-            }
+            // Setup GSAP Animation
+            setupScrollAnimation();
+            
+        }, undefined, function (error) {
+            console.error('An error happened loading the GLB', error);
+            if (loadingText) loadingText.innerText = "Error Loading 3D Model.";
         });
 
-        // 1. Text fades out smoothly
-        tl.to("#stage-text", { opacity: 0, y: -50, duration: 0.5 }, 0);
+        // Resize handler
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
 
-        // 2. Play 3D Sequence (Dynamic Progress 0 to 1)
-        tl.to(vrSequence, {
-            progress: 1,
-            ease: "none",
-            duration: 3,          
-            onUpdate: render
-        }, 0);
-
-        // 3. Scale up final frame into the lenses
-        tl.to(canvas, {
-            scale: 25,
-            opacity: 0,
-            ease: "power2.inOut",
-            duration: 1.5
-        }, 3); // Starts right after rotation is done
-
-        // 4. Fade in the inside-the-VR-simulation video
-        tl.fromTo("#video-container", {
-            opacity: 0,
-            scale: 0.8
-        }, {
-            opacity: 1,
-            scale: 1,
-            ease: "power2.out",
-            duration: 1.5,
-            onStart: () => {
-                const vid = document.getElementById('demo-video');
-                if (vid && vid.paused) vid.play().catch(e => console.log('Video autoplay blocked:', e));
+        // Animation Loop
+        const clock = new THREE.Clock();
+        function animate() {
+            requestAnimationFrame(animate);
+            // Idle hover effect before scrolling begins
+            if (questModel && window.scrollY < 50) {
+                const time = clock.getElapsedTime();
+                questModel.position.y = Math.sin(time * 1.5) * 0.08;
+                questModel.rotation.y = (-Math.PI / 5) + Math.cos(time * 0.5) * 0.03;
+            } else if (questModel && window.scrollY >= 50) {
+                // Return to neutral y when animated
+                questModel.position.y = 0;
             }
-        }, 3.5);
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // ─── SCROLL TRIGGER SEQUENCE ───
+        function setupScrollAnimation() {
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#scroll-stage",
+                    start: "top top",     
+                    end: "+=4000",        
+                    pin: true,            
+                    scrub: 1.5, // Smoother scrub interpolation
+                    anticipatePin: 1
+                }
+            });
+
+            tl.to("#stage-text", { opacity: 0, y: -50, duration: 0.5 }, 0);
+
+            // Phase 1: Lift & Spin - "Preparing to Wear" (0 to 2)
+            tl.to(questModel.rotation, {
+                y: Math.PI, // Spin to reveal the lenses
+                x: 0.3,     // Tilt upward slightly, like lifting it above the head
+                z: 0.0,
+                ease: "power2.inOut",
+                duration: 2.0
+            }, 0);
+
+            tl.to(questModel.position, {
+                y: 1.8,     // Lift the headset UP much higher into the air (above head)
+                ease: "power2.inOut",
+                duration: 2.0
+            }, 0);
+
+            tl.to(questModel.scale, {
+                x: 2.2,     // Starts expanding as it gets closer
+                y: 2.2,
+                z: 2.2,
+                ease: "power2.inOut",
+                duration: 2.0
+            }, 0);
+
+            // Camera approaches nicely
+            tl.to(camera.position, {
+                z: 3.5,     // Closer, looking up at the lenses
+                ease: "power2.inOut",
+                duration: 2.0
+            }, 0);
+
+            // Phase 2: "Putting it On" (2 to 3)
+            // Headset drastically zooms over the camera while dropping down
+            tl.to(questModel.position, {
+                y: -0.4,    // Drops down sharply over the face
+                ease: "power3.in",
+                duration: 1.0
+            }, 2.0); 
+            
+            tl.to(questModel.rotation, {
+                x: -0.15,   // Snaps over the crown of the head
+                ease: "power2.in",
+                duration: 1.0
+            }, 2.0);
+
+            tl.to(questModel.scale, {
+                x: 5.0,     // Gets MASSIVE engulfing the entire view
+                y: 5.0,
+                z: 5.0,
+                ease: "power3.in",
+                duration: 1.0
+            }, 2.0); 
+
+            tl.to(camera.position, {
+                z: -1.0,    // Camera crashes directly through the lenses into the headset
+                ease: "power4.in",
+                duration: 1.0
+            }, 2.0); 
+
+            // Phase 3: Fade out canvas entirely exactly when screen hits black (around 2.8)
+            tl.to(canvas, {
+                opacity: 0,
+                ease: "power2.inOut",
+                duration: 0.3
+            }, 2.7);
+
+            // Phase 4: Big explosive reveal of the video (2.8 to 4)
+            tl.fromTo("#video-container", {
+                opacity: 0,
+                scale: 1.3 // Massive zoom down
+            }, {
+                opacity: 1,
+                scale: 1,  // Snap to screen
+                ease: "power3.out",
+                duration: 1.2,
+                onStart: () => {
+                    const vid = document.getElementById('demo-video');
+                    if (vid && vid.paused && !isVideoTransitioned) {
+                        isVideoTransitioned = true;
+                        vid.play().catch(e => console.log('Video autoplay blocked:', e));
+                    }
+                }
+            }, 2.8);
+        }
 
     </script>
     <script src="cms.js"></script>
+    <script>
+        (function() {
+            var btn = document.getElementById('nav-hamburger');
+            var links = document.querySelector('.nav-links');
+            var overlay = document.getElementById('nav-overlay');
+            if (!btn) return;
+            function openMenu() { btn.classList.add('open'); links.classList.add('open'); overlay.classList.add('visible'); document.body.style.overflow = 'hidden'; }
+            function closeMenu() { btn.classList.remove('open'); links.classList.remove('open'); overlay.classList.remove('visible'); document.body.style.overflow = ''; }
+            btn.addEventListener('click', function() { btn.classList.contains('open') ? closeMenu() : openMenu(); });
+            overlay.addEventListener('click', closeMenu);
+            links.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', closeMenu); });
+        })();
+    </script>
 </body>
 
 </html>
+
+
 
 
 
