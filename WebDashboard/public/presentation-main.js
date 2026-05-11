@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
@@ -157,6 +159,10 @@ scene.add(robotRimLight);
 const robotRimLight2 = new THREE.DirectionalLight(0xffffff, 0);
 robotRimLight2.position.set(15, -5, -20);
 scene.add(robotRimLight2);
+
+// Ambient light specifically to lift shadows on the robot
+const robotAmbientLight = new THREE.AmbientLight(0xffffff, 0);
+scene.add(robotAmbientLight);
 
 // ==========================================
 // TOUCH 7: LENS FLARE (Fake)
@@ -389,16 +395,13 @@ function tweakRobotMaterial(mat) {
     }
     mat.side = THREE.DoubleSide;
     
-    // If it's completely black, make it dark gunmetal. 
-    // Pure black (0x000000) absorbs all light and vanishes in a dark background.
-    if (mat.color && mat.color.getHex() <= 0x050505) {
-        mat.color.setHex(0x222222); 
-    } 
-    // Removed the lightness boost to preserve its EXACT natural colors.
+    // Real Satin Metal base - grey, not white
+    mat.color.setHex(0x777777); 
 
     if (mat.isMeshStandardMaterial) {
-        mat.metalness = 0.85; // High metalness for realistic iron/metal look
-        mat.roughness = 0.25; // Low roughness for sharp metallic reflections
+        mat.metalness = 0.9;  // Strong metallic feel
+        mat.roughness = 0.4;  // Satin finish - subtle highlights, no mirror glare
+        mat.emissive.setHex(0x000000);
     }
     
     // Force remove any emissive glow that might have come from the FBX
@@ -461,13 +464,25 @@ loader.load(
     (error) => console.error(error)
 );
 
-loader.load(
-    'assets/fullrobot.fbx',
-    (object) => {
-        robotModel = processRobotModel(object);
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
+
+const gltfLoader = new GLTFLoader();
+gltfLoader.setDRACOLoader(dracoLoader);
+
+gltfLoader.load(
+    'assets/fullrobot.glb',
+    (gltf) => {
+        robotModel = processRobotModel(gltf.scene);
         checkLoad();
     },
-    undefined,
+    (xhr) => {
+        if (modelsLoaded === 1) { // If engine is loaded, show robot progress
+            const percent = Math.round((xhr.loaded / xhr.total) * 100);
+            const text = document.getElementById('loader-text');
+            if(text) text.innerText = `DECODING ROBOT GEOMETRY ${percent}%`;
+        }
+    },
     (error) => console.error(error)
 );
 
@@ -597,10 +612,11 @@ function setupAnimations() {
     tl.to(engineModel.scale, { x: 0.001, y: 0.001, z: 0.001, duration: dur/2, ease: "back.in(2)" }, dur * 3);
     tl.to(linesMesh.material, { opacity: 0, duration: dur/2 }, dur * 3);
     
-    // Show and animate Robot
-    tl.to(robotLight, { intensity: 1.5, duration: dur }, dur * 3);
-    tl.to(robotRimLight, { intensity: 4.0, duration: dur }, dur * 3);
-    tl.to(robotRimLight2, { intensity: 2.0, duration: dur }, dur * 3);
+    // Show and animate Robot (Boosted intensities for "Much Clearer" look)
+    tl.to(robotLight, { intensity: 4.0, duration: dur }, dur * 3);
+    tl.to(robotRimLight, { intensity: 6.0, duration: dur }, dur * 3);
+    tl.to(robotRimLight2, { intensity: 4.0, duration: dur }, dur * 3);
+    tl.to(robotAmbientLight, { intensity: 0.5, duration: dur }, dur * 3); // Subtle lift, not washout
     tl.to(robotModel, { visible: true, duration: 0.01 }, dur * 3);
     tl.to(robotModel.scale, { x: 0.45, y: 0.45, z: 0.45, duration: dur/2, ease: "back.out(2)" }, (dur * 3) + dur/2);
     tl.fromTo(robotModel.position, { y: -10 }, { y: -2, duration: dur, ease: "power1.out" }, dur * 3);
@@ -676,6 +692,7 @@ function setupAnimations() {
     tl.to(coreGlow, { intensity: 0, duration: dur }, dur * 10);
     tl.to(heatLight, { intensity: 0, duration: dur }, dur * 10);
     tl.to(bloomPass, { strength: 0.05, duration: dur }, dur * 10);
+    tl.to(robotAmbientLight, { intensity: 0, duration: dur }, dur * 10);
     tl.to(flareMat, { opacity: 0, duration: dur }, dur * 10);
 }
 
