@@ -124,18 +124,42 @@ const sparksMesh = new THREE.Points(sparksGeo, sparksMat);
 scene.add(sparksMesh);
 
 // ==========================================
-// LIGHTING SETUP (FIXED BLACK ENGINE)
+// LIGHTING SETUP (PREMIUM STUDIO LIGHTING)
 // ==========================================
-const hemiLight = new THREE.HemisphereLight(0xffffff, 0x112244, 1.2);
+const hemiLight = new THREE.HemisphereLight(0xffffff, 0x112244, 2.5); // Boosted from 1.2
 scene.add(hemiLight);
 
-const mainLight = new THREE.DirectionalLight(0xffffff, 2.5);
+const mainLight = new THREE.DirectionalLight(0xffffff, 3.5); // Boosted from 2.5
 mainLight.position.set(20, 30, 20);
 scene.add(mainLight);
 
-const fillLight = new THREE.DirectionalLight(0x00e5ff, 2.0);
+const fillLight = new THREE.DirectionalLight(0x00e5ff, 2.5); // Boosted from 2.0
 fillLight.position.set(-20, -10, 10);
 scene.add(fillLight);
+
+// Environment Map for Metallic Reflections (Crucial for fixing 'black' look)
+const pmremGenerator = new THREE.PMREMGenerator(renderer);
+pmremGenerator.compileEquirectangularShader();
+
+// Create a simple procedural envMap using a canvas
+const envCanvas = document.createElement('canvas');
+envCanvas.width = 512; envCanvas.height = 256;
+const envCtx = envCanvas.getContext('2d');
+const envGrad = envCtx.createLinearGradient(0, 0, 0, 256);
+envGrad.addColorStop(0, '#0a1a2a');
+envGrad.addColorStop(0.5, '#1a2a3a');
+envGrad.addColorStop(1, '#0a1a2a');
+envCtx.fillStyle = envGrad;
+envCtx.fillRect(0, 0, 512, 256);
+// Add some "lights" to the envMap for reflections
+for(let i=0; i<10; i++) {
+    envCtx.fillStyle = `rgba(0, 229, 255, ${Math.random() * 0.5})`;
+    envCtx.fillRect(Math.random()*512, Math.random()*256, 50, 100);
+}
+const envTex = new THREE.CanvasTexture(envCanvas);
+envTex.mapping = THREE.EquirectangularReflectionMapping;
+const envMap = pmremGenerator.fromEquirectangular(envTex).texture;
+scene.environment = envMap; // Applies to all StandardMaterials
 
 // Changed from aggressive 0xff3300 to warm amber 0xff6600 — easier on the eyes
 const heatLight = new THREE.DirectionalLight(0xff6600, 0);
@@ -163,6 +187,11 @@ scene.add(robotRimLight2);
 // Ambient light specifically to lift shadows on the robot
 const robotAmbientLight = new THREE.AmbientLight(0xffffff, 0);
 scene.add(robotAmbientLight);
+
+// Extra PointLight for internal robot details
+const robotPointLight = new THREE.PointLight(0x00e5ff, 0, 50);
+robotPointLight.position.set(0, 5, 5);
+scene.add(robotPointLight);
 
 // ==========================================
 // TOUCH 7: LENS FLARE (Fake)
@@ -395,18 +424,12 @@ function tweakRobotMaterial(mat) {
     }
     mat.side = THREE.DoubleSide;
     
-    // Real Satin Metal base - grey, not white
-    mat.color.setHex(0x777777); 
-
-    if (mat.isMeshStandardMaterial) {
-        mat.metalness = 0.9;  // Strong metallic feel
-        mat.roughness = 0.4;  // Satin finish - subtle highlights, no mirror glare
-        mat.emissive.setHex(0x000000);
-    }
+    // We remove color overrides to preserve the model's natural textures and colors.
+    // The improved lighting and environment map will ensure these colors are clearly visible.
     
-    // Force remove any emissive glow that might have come from the FBX
-    if (mat.emissive) {
-        mat.emissive.setHex(0x000000);
+    if (mat.isMeshStandardMaterial) {
+        // Ensure the material is ready for the environment map reflections
+        mat.envMapIntensity = 1.5; 
     }
 }
 
@@ -613,10 +636,11 @@ function setupAnimations() {
     tl.to(linesMesh.material, { opacity: 0, duration: dur/2 }, dur * 3);
     
     // Show and animate Robot (Boosted intensities for "Much Clearer" look)
-    tl.to(robotLight, { intensity: 4.0, duration: dur }, dur * 3);
-    tl.to(robotRimLight, { intensity: 6.0, duration: dur }, dur * 3);
-    tl.to(robotRimLight2, { intensity: 4.0, duration: dur }, dur * 3);
-    tl.to(robotAmbientLight, { intensity: 0.5, duration: dur }, dur * 3); // Subtle lift, not washout
+    tl.to(robotLight, { intensity: 6.0, duration: dur }, dur * 3);
+    tl.to(robotRimLight, { intensity: 8.0, duration: dur }, dur * 3);
+    tl.to(robotRimLight2, { intensity: 6.0, duration: dur }, dur * 3);
+    tl.to(robotAmbientLight, { intensity: 1.2, duration: dur }, dur * 3); // Stronger lift
+    tl.to(robotPointLight, { intensity: 20, duration: dur }, dur * 3);
     tl.to(robotModel, { visible: true, duration: 0.01 }, dur * 3);
     tl.to(robotModel.scale, { x: 0.45, y: 0.45, z: 0.45, duration: dur/2, ease: "back.out(2)" }, (dur * 3) + dur/2);
     tl.fromTo(robotModel.position, { y: -10 }, { y: -2, duration: dur, ease: "power1.out" }, dur * 3);
